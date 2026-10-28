@@ -30,6 +30,8 @@ const LIMIT = 1000;
 // openFDA rejects skip above 25,000, so a window holding more is split.
 const MAX_SKIP = 25000;
 const FIRST_YEAR = 2012;
+// A stalled request would hold the whole sequential fetch; a timeout fails the source so it keeps its previous records.
+const REQUEST_TIMEOUT_MS = 60_000;
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const compact = (d: Date) => `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}`;
@@ -49,7 +51,9 @@ async function getPage(
 ): Promise<Page> {
   const params = [`search=report_date:[${from}+TO+${to}]`, `limit=${LIMIT}`, `skip=${skip}`];
   if (process.env.OPENFDA_API_KEY) params.push(`api_key=${encodeURIComponent(process.env.OPENFDA_API_KEY)}`);
-  const res = await fetchFn(`${BASE}/${endpoint}/enforcement.json?${params.join("&")}`);
+  const res = await fetchFn(`${BASE}/${endpoint}/enforcement.json?${params.join("&")}`, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
   // openFDA answers 404 when nothing matches.
   if (res.status === 404) return { results: [], total: 0 };
   if (!res.ok) throw new Error(`openFDA ${endpoint} returned ${res.status}`);
