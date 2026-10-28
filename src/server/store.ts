@@ -42,7 +42,7 @@ export function createStore(opts: StoreOptions): Store {
       } catch (e) {
         opts.onError?.(e);
       }
-      const stale = !snapshot || Date.now() - Date.parse(snapshot.generatedAt) >= intervalMs;
+      const stale = !snapshot || !(Date.now() - Date.parse(snapshot.generatedAt) < intervalMs);
       if (stale) await refreshQuietly();
       const timer = setInterval(refreshQuietly, intervalMs);
       timer.unref();

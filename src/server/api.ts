@@ -30,10 +30,20 @@ export function summarizeStates(snapshot: Snapshot): StatesResponse {
   return out;
 }
 
+const summaries = new WeakMap<Snapshot, StatesResponse>();
+
+/** A snapshot is replaced whole on refresh, so its summary is computed once per snapshot. */
+const statesOf = (snapshot: Snapshot): StatesResponse => {
+  let out = summaries.get(snapshot);
+  if (!out) summaries.set(snapshot, (out = summarizeStates(snapshot)));
+  return out;
+};
+
 /** Routes read the snapshot per request, so a swap is seen by the next one. */
 export function apiRoutes(current: () => Snapshot | null): Hono {
   const api = new Hono();
-  const snapshot = (): Snapshot => current() ?? { generatedAt: "", sources: {}, recalls: [] };
+  const empty: Snapshot = { generatedAt: "", sources: {}, recalls: [] };
+  const snapshot = (): Snapshot => current() ?? empty;
 
   api.get("/recalls", (c) => {
     const { status, category, class: cls, state } = c.req.query();
@@ -52,7 +62,7 @@ export function apiRoutes(current: () => Snapshot | null): Hono {
     return recall ? c.json(recall) : c.json({ error: "not found" }, 404);
   });
 
-  api.get("/states", (c) => c.json<StatesResponse>(summarizeStates(snapshot())));
+  api.get("/states", (c) => c.json<StatesResponse>(statesOf(snapshot())));
 
   api.get("/meta", (c) => c.json<MetaResponse>(snapshot().sources));
 
