@@ -95,7 +95,7 @@ Each feed item becomes a Recall with `classification` null, `status` `active` an
 
 A page that fails to load or does not parse keeps its item: `product` and `reason` are the feed's title and description, `firm` is empty and `locationUnclear` is true. Only a feed that fails fails the source.
 
-A refresh reads only pages not read before. The source takes the announcements of the previous snapshot file, keyed by link URL, and reuses any whose `distributionText` is not empty; a failed page, or one that mentions no distribution, is read again. fda.gov is asked for at most one request a second.
+A refresh reads only pages not read before. `buildSnapshot` hands the source its records from the previous snapshot; the source keys them by link URL and reuses any whose page was read (its `firm` is not empty), whether or not the page named a distribution. A failed page is read again. fda.gov is asked for at most one request a second.
 
 ### Recall model
 
