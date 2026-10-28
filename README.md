@@ -2,7 +2,7 @@
 
 # food-safety
 
-A web app for seeing where FDA and USDA food [recalls](docs/glossary.md#recall) are active in the United States. Today it is a scaffold: a server with a health check, a web shell with a Map page and a Dashboard page, and the [severity](docs/glossary.md#severity-class) palette. Recalls are ingested from openFDA into a snapshot the server does not yet serve. See [product](docs/product.md) for what it is for.
+A web app for seeing where FDA and USDA food [recalls](docs/glossary.md#recall) are active in the United States. It has a server with an API, a web shell with a Map page and a Dashboard page, and the [severity](docs/glossary.md#severity-class) palette. Recalls are ingested from openFDA into a snapshot the server serves through `/api/recalls`, `/api/states` and `/api/meta`. See [product](docs/product.md) for what it is for.
 
 ## Requirements
 
@@ -23,6 +23,8 @@ Open the address Vite prints. `/api` requests are proxied to the server; set `PO
 npm run build      # web to dist/web, server to dist/server
 npm start          # serves the API and the built web on :3000
 ```
+
+The server loads `data/snapshot.json`, and re-runs the ingest on start if it is missing or older than `REFRESH_HOURS` (default 6) and then every `REFRESH_HOURS`. See [architecture](docs/architecture.md#api) for the endpoints.
 
 ## Ingest
 

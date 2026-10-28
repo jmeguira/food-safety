@@ -14,10 +14,10 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (snap
 
 | Part | Where | Responsibility |
 |---|---|---|
-| Server | `src/server/` | `createApp(webRoot)` in `app.ts` builds the Hono app; `main.ts` starts it on `PORT` (default 3000), serving `dist/web` |
+| Server | `src/server/` | `createApp(webRoot, current)` in `app.ts` builds the Hono app; `api.ts` holds the API routes; `store.ts` holds the [snapshot](glossary.md#snapshot) in memory and refreshes it; `main.ts` starts it on `PORT` (default 3000), serving `dist/web` |
 | Web | `src/web/` | React app routed with react-router: `/` is the Map page, `/dashboard` the Dashboard; both are placeholders |
 | Severity | `src/shared/severity.ts`, `src/web/severity.ts` | the [severity class](glossary.md#severity-class) type, and its label, color and meaning for display |
-| Shared | `src/shared/` | types used by both server and web, such as `Health` |
+| Shared | `src/shared/` | types used by both server and web; `api.ts` holds the request and response types of the API |
 | States | `src/shared/states.ts` | the 50 states, DC and the territories, each with USPS code, name and FIPS code; records carry USPS codes, the map joins on FIPS |
 | Recall | `src/shared/recall.ts` | the `Recall` model every [source](glossary.md#source) normalizes to |
 | Ingest | `src/ingest/` | `distribution.ts` turns a [distribution pattern](glossary.md#distribution-pattern) into states; `openfda.ts` fetches and normalizes openFDA; `sources.ts` lists the sources; `snapshot.ts` builds and writes the [snapshot](glossary.md#snapshot); `main.ts` is `npm run ingest` |
@@ -27,10 +27,30 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (snap
 
 `app.ts` handles requests in this order:
 
-1. `GET /api/health` returns `{ "ok": true }`.
+1. `/api/health` and the routes in the table below.
 2. Any other `/api/*` returns 404 JSON, so an unknown API path never falls through to the [shell](glossary.md#shell).
 3. Static files from the web root.
 4. Any other path returns `index.html`, so client routes load directly.
+
+### API
+
+Every route reads the snapshot the store holds at the moment of the request; none reads a source.
+
+| Route | Returns |
+|---|---|
+| `GET /api/health` | `{ "ok": true }` |
+| `GET /api/recalls` | the Recalls matching every query parameter given: `status` (`active`, `closed`), `category`, `class` (`I`, `II`, `III`, `unclassified`), `state` (USPS code; matches recalls that name the state and nationwide ones) |
+| `GET /api/recalls/:id` | one Recall, or 404 |
+| `GET /api/states` | an object keyed by USPS code, each `{ active, mostSevere }`: the active recalls by class, and the most severe class present (null when none). It counts only recalls that name the state. Nationwide recalls, which list every state, are counted under the key `nationwide` instead, in the same shape, so the map decides how to combine them |
+| `GET /api/meta` | each source's `{ refreshedAt, count, error }` |
+
+Before the first snapshot exists the routes answer as if it were empty. Routes are added to `apiRoutes` in `api.ts`.
+
+### Refresh
+
+`store.ts` keeps the snapshot in memory. On start it reads `data/snapshot.json` and refreshes at once if the file is missing or its `generatedAt` is `REFRESH_HOURS` (default 6) or more old; it then refreshes every `REFRESH_HOURS`. The server listens before the first refresh ends.
+
+A refresh builds the next snapshot with the same `buildSnapshot` as `npm run ingest`, writes it to the file, and only then replaces the one in memory, so requests see either the old snapshot or the new, never a partial one. If the write fails, the old snapshot stays and the error is logged. A source that fails keeps its previous records inside the new snapshot, as [described below](#snapshot). Only one refresh runs at a time.
 
 ## Distribution patterns
 
