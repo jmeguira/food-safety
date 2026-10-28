@@ -12,7 +12,7 @@ The agency's grading of a recall, I, II or III, or null until it is classified. 
 An agency feed that recalls are read from, registered in `src/ingest/sources.ts`. The three openFDA endpoints are the sources today. See [architecture](architecture.md#ingest).
 
 ### snapshot
-`data/snapshot.json`: every source's recalls and each source's refresh time, count and error, written by `npm run ingest` and read by the server. See [architecture](architecture.md#snapshot).
+`data/snapshot.json`: every source's recalls and each source's refresh time, count and error, written by `npm run ingest`. See [architecture](architecture.md#snapshot).
 
 ### severity class
 The agency's grading of a recall: Class I (serious harm or death is reasonably probable), Class II (temporary or reversible harm), Class III (not likely to cause harm), or unclassified when announced but not yet graded. Defined in `src/shared/severity.ts`; each class has a label, color and meaning in `src/web/severity.ts`.
