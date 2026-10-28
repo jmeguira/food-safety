@@ -3,10 +3,16 @@
 # Glossary
 
 ### recall
-A public notice that a food product is being pulled from the market. In this repository, one from the FDA or the USDA.
+A public notice that a product is being pulled from the market. In this repository, one food, drug or device enforcement report from openFDA, held as a `Recall`. See [architecture](architecture.md#recall-model).
+
+### class
+The agency's grading of a recall, I, II or III, or null until it is classified. The Recall's `classification`; see [severity class](#severity-class).
 
 ### source
-An agency feed that recalls are read from. Reading from sources is not built yet.
+An agency feed that recalls are read from, registered in `src/ingest/sources.ts`. The three openFDA endpoints are the sources today. See [architecture](architecture.md#ingest).
+
+### snapshot
+`data/snapshot.json`: every source's recalls and each source's refresh time, count and error, written by `npm run ingest`. See [architecture](architecture.md#snapshot).
 
 ### severity class
 The agency's grading of a recall: Class I (serious harm or death is reasonably probable), Class II (temporary or reversible harm), Class III (not likely to cause harm), or unclassified when announced but not yet graded. Defined in `src/shared/severity.ts`; each class has a label, color and meaning in `src/web/severity.ts`.

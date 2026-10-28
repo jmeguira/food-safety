@@ -5,7 +5,7 @@
 One Node process serves the [API](glossary.md#api) and the built web app; a React single-page app is the UI.
 
 ```
-browser ── React app ── fetch /api ──▶ Hono server ──▶ (ingest, not yet built)
+browser ── React app ── fetch /api ──▶ Hono server ──▶ (snapshot)
                  ▲                         │
                  └──── static files / shell┘
 ```
@@ -19,7 +19,8 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (inge
 | Severity | `src/shared/severity.ts`, `src/web/severity.ts` | the [severity class](glossary.md#severity-class) type, and its label, color and meaning for display |
 | Shared | `src/shared/` | types used by both server and web, such as `Health` |
 | States | `src/shared/states.ts` | the 50 states, DC and the territories, each with USPS code, name and FIPS code; records carry USPS codes, the map joins on FIPS |
-| Ingest | `src/ingest/` | `distribution.ts` turns a [distribution pattern](glossary.md#distribution-pattern) into states; reading [sources](glossary.md#source) is not built yet |
+| Recall | `src/shared/recall.ts` | the `Recall` model every [source](glossary.md#source) normalizes to |
+| Ingest | `src/ingest/` | `distribution.ts` turns a [distribution pattern](glossary.md#distribution-pattern) into states; `openfda.ts` fetches and normalizes openFDA; `sources.ts` lists the sources; `snapshot.ts` builds and writes the [snapshot](glossary.md#snapshot); `main.ts` is `npm run ingest` |
 | Tests | `test/` | vitest; `test/fixtures/distribution.json` holds real distribution patterns from openFDA food, drug and device enforcement reports, each with its expected result |
 
 ## Server
@@ -53,6 +54,44 @@ The reading is done in this order:
 
 Text in all capitals that uses "IN" or "OR" as words reads as the states Indiana and Oregon.
 
+## Ingest
+
+`npm run ingest` fetches each source in `SOURCES` (`src/ingest/sources.ts`, each `{ id, fetch, normalize }`), normalizes every record to a [Recall](glossary.md#recall), and writes the snapshot. `--fixtures` answers the openFDA requests from `test/fixtures/openfda/` instead of the network.
+
+openFDA serves food, drug and device enforcement reports at `https://api.fda.gov/<endpoint>/enforcement.json`. A request returns at most 1,000 reports and skips at most 25,000, so the fetcher reads one year of `report_date` at a time and halves a window whose total exceeds what skipping can reach. A 404 means an empty window; any other failed request fails the source. `OPENFDA_API_KEY`, when set, is sent as `api_key`; none is required.
+
+### Recall model
+
+Defined in `src/shared/recall.ts`; the rest of the code never reads a source's own field names.
+
+| Field | Holds | openFDA field |
+|---|---|---|
+| `id` | source and recall number, `openfda-food:F-0848-2024` | |
+| `source` | `openfda-food`, `openfda-drug`, `openfda-device`, `fsis` or `fda-announcement` | the endpoint |
+| `category` | `food`, `drug`, `device` or `meat-poultry-egg` | the endpoint |
+| `recallNumber` | the agency's number | `recall_number` |
+| `classification` | `I`, `II`, `III`, or null when not yet classified | `classification` ("Class I") |
+| `status` | `active` for ongoing and pending, `closed` for completed and terminated | `status` |
+| `product`, `reason`, `firm` | text | `product_description`, `reason_for_recall`, `recalling_firm` |
+| `firmCity`, `firmState` | text, null when blank | `city`, `state` |
+| `distributionText` | the [distribution pattern](glossary.md#distribution-pattern) as written | `distribution_pattern` |
+| `states`, `nationwide`, `foreign`, `locationUnclear` | the parsed distribution | from `distributionText` |
+| `quantity` | text, null when blank | `product_quantity` |
+| `codeInfo` | both code fields joined, null when blank | `code_info`, `more_code_info` |
+| `voluntary` | true when firm initiated, false when mandated, else null | `voluntary_mandated` |
+| `initiatedAt`, `reportedAt`, `classifiedAt`, `closedAt` | ISO dates, null when absent | `recall_initiation_date`, `report_date`, `center_classification_date`, `termination_date` |
+| `links` | `{ label, url }` list; one "openFDA record" link to `search=recall_number:"<number>"` | |
+
+### Snapshot
+
+`data/snapshot.json`, ignored by git, is written to a temporary file and renamed, so a reader never sees a partial file.
+
+```
+{ generatedAt, sources: { [id]: { refreshedAt, count, error } }, recalls }
+```
+
+When a source fails, its records from the previous snapshot are kept as they were, `refreshedAt` stays at its last success (null if there was none), `count` is the number kept, and `error` holds the message. A failed fetch never leaves a source with fewer records. A source that succeeds replaces its records and has a null `error`. The run exits non-zero if any source failed.
+
 ## Build and run
 
 - `npm run dev` runs Vite and the server under `tsx watch`; Vite proxies `/api` to the server's port.
@@ -64,5 +103,6 @@ Text in all capitals that uses "IN" or "OR" as words reads as the states Indiana
 | Rule | Kept by |
 |---|---|
 | The web UI reads data only through the API | no server code is imported by `src/web/`; shared code is types and constants |
-| No test reaches the network | sources, once ingested, are tested against recorded responses in `test/fixtures/` |
+| No test reaches the network | every source is tested against recorded responses in `test/fixtures/` |
+| Every source normalizes to the Recall model, and nothing downstream reads a source's raw shape | `normalize` in each source; only `src/ingest/` knows openFDA's fields |
 | Dependencies are pure JavaScript | the build image has no compilers |
