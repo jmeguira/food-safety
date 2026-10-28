@@ -1,0 +1,26 @@
+[README](../README.md) · [architecture](architecture.md) · **product** · [glossary](glossary.md)
+
+# Product
+
+## What it is for
+
+Food [recalls](glossary.md#recall) are announced by the FDA and the USDA in separate places, in agency terms. This product brings them together so a reader can see:
+
+- **Where** recalls are active, on a map of the United States.
+- **How severe** each is, by its [severity class](glossary.md#severity-class).
+- **Where to read the primary source** for each.
+- **How recalls have run over time**, on a dashboard of recall history.
+
+## Who it is for
+
+Anyone who wants to know what is being recalled near them, or how recalls have trended, without reading agency notices one by one.
+
+## Where it stands
+
+Done: the web shell with a Map page and a Dashboard page (both placeholders), the severity palette, and a server with a health check.
+
+Not done: reading recalls from any [source](glossary.md#source), the map, the dashboard charts. Those are what the product is for, not claims about the code.
+
+## What it does not do
+
+It does not replace the agencies: each recall links to its primary source, which stays the authority.
