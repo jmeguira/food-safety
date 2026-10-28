@@ -68,6 +68,9 @@ export function parseFeed(xml: string): FeedItem[] {
   }));
 }
 
+/** Stands in for the firm of a parsed page that names none, so an empty firm marks a failed page alone. */
+const UNNAMED_FIRM = "Not named";
+
 const DISTRIBUTION_SENTENCE = /distribu|shipp|\bsold\b|nationwide|nationally|\bstates\b|retail|available (?:in|at)|sent to/i;
 
 function term(html: string, label: string): string | null {
@@ -117,7 +120,7 @@ export function normalizeAnnouncement({ item, page, cached }: Announcement): Rec
     status: "active",
     product: page?.product ?? item.title,
     reason: page?.reason ?? item.description,
-    firm: page?.firm ?? "",
+    firm: page ? (page.firm ?? UNNAMED_FIRM) : "",
     firmCity: null,
     firmState: null,
     distributionText: page?.distributionText ?? "",
@@ -155,7 +158,7 @@ export async function fetchAnnouncements(
   if (!res.ok) throw new Error(`FDA recalls feed returned ${res.status}`);
   const items = parseFeed(await res.text());
 
-  // A failed page leaves the firm empty (the feed does not name it), so it is read again; a page with no distribution is not.
+  // A failed page leaves the firm empty (the feed does not name it), so it is read again; a parsed page never does, whether or not it named a firm or a distribution.
   const read = new Map<string, Recall>();
   for (const r of previous) if (r.source === "fda-announcement" && r.firm !== "") read.set(r.links[0]?.url, r);
 

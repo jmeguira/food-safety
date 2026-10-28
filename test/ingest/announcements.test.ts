@@ -103,6 +103,23 @@ describe("announcements", () => {
     expect(urls.filter((u) => !u.endsWith("rss.xml"))).toEqual([TONIGHT]);
   });
 
+  it("cache: a parsed page without a company name is not read again", async () => {
+    const nameless = (async (url, init) => {
+      const res = await fixtureFetch(url, init);
+      if (String(url).endsWith("rss.xml")) return res;
+      return new Response((await res.text()).replace(/Company Name:/g, "Company:"), { status: res.status });
+    }) as typeof fetch;
+    const first = await run([], nameless);
+    expect(byUrl(first, HAIFA).firm).not.toBe("");
+    const urls: string[] = [];
+    const spy = (async (url, init) => {
+      urls.push(String(url));
+      return fixtureFetch(url, init);
+    }) as typeof fetch;
+    await run(first, spy);
+    expect(urls.filter((u) => !u.endsWith("rss.xml"))).toEqual([TONIGHT]);
+  });
+
   it("asks fda.gov for one page a second", async () => {
     sleeps.length = 0;
     await run();
