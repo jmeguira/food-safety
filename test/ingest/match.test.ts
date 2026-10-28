@@ -114,14 +114,33 @@ describe("merge", () => {
     expect(mergeAnnouncements(recalls)).toEqual(recalls);
   });
 
-  it("gives each announcement the closest report and each report at most one announcement", () => {
+  it("gives an announcement the closest report in time", () => {
     const c = { ...cases.pairs[0], announcedAt: "2026-03-15" };
-    const near = report({ ...c, recallNumber: "near", initiatedAt: "2026-03-14" });
     const far = report({ ...c, recallNumber: "far", initiatedAt: "2026-03-05" });
-    const a1 = announcement(c);
-    const a2 = announcement({ ...c, announcementUrl: "https://www.fda.gov/second" });
-    const merged = mergeAnnouncements([a1, a2, far, near]);
-    expect(merged.map((r) => [r.recallNumber, r.links.length])).toEqual([["far", 2], ["near", 2]]);
+    const near = report({ ...c, recallNumber: "near", initiatedAt: "2026-03-14" });
+    const merged = mergeAnnouncements([announcement(c), far, near]);
+    expect(merged.map((r) => [r.recallNumber, r.links.length])).toEqual([["far", 1], ["near", 2]]);
+    expect(merged[1].links.map((l) => l.url)).toContain(c.announcementUrl);
+  });
+
+  it("gives a report at most one announcement", () => {
+    const c = cases.pairs[0];
+    const only = report({ ...c, initiatedAt: "2026-03-14" });
+    const first = announcement({ ...c, announcedAt: "2026-03-15" });
+    const second = announcement({ ...c, announcementUrl: "https://www.fda.gov/second", announcedAt: "2026-03-16" });
+    const merged = mergeAnnouncements([first, second, only]);
+    expect(merged).toHaveLength(2);
+    expect(merged.find((r) => r.source !== "fda-announcement")!.links.map((l) => l.url)).toContain(c.announcementUrl);
+    expect(merged.find((r) => r.source === "fda-announcement")!.links[0].url).toBe("https://www.fda.gov/second");
+  });
+
+  it("does not repeat an announcement link a report already carries", () => {
+    const c = cases.pairs[0];
+    const a = announcement(c);
+    const r = { ...report({ ...c, initiatedAt: c.announcedAt }), links: [...a.links] };
+    const merged = mergeAnnouncements([a, r]);
+    expect(merged).toHaveLength(1);
+    expect(merged[0].links.filter((l) => l.url === c.announcementUrl)).toHaveLength(1);
   });
 
   it("happens in the snapshot once every source is fetched", async () => {

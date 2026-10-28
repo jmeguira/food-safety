@@ -50,7 +50,7 @@ export function mergeAnnouncements(recalls: Recall[]): Recall[] {
       .sort((p, q) => gap(a, p) - gap(a, q))[0];
     if (!best) continue;
     matched.add(a);
-    gained.set(best, { ...best, links: [...best.links, ...a.links] });
+    gained.set(best, { ...best, links: [...best.links, ...a.links.filter((l) => !best.links.some((k) => k.url === l.url))] });
   }
   return recalls.filter((r) => !matched.has(r)).map((r) => gained.get(r) ?? r);
 }
