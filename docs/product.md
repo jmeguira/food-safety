@@ -8,7 +8,7 @@ Food [recalls](glossary.md#recall) are announced by the FDA and the USDA in sepa
 
 - **Where** recalls are active, on a map of the United States.
 - **How severe** each is, by its [severity class](glossary.md#severity-class).
-- **Where to read the primary source** for each.
+- **Where to read the agency's own notice** for each.
 - **How recalls have run over time**, on a dashboard of recall history.
 
 ## Who it is for
@@ -23,4 +23,4 @@ Not done: reading recalls from any [source](glossary.md#source), the map, the da
 
 ## What it does not do
 
-It does not replace the agencies: each recall links to its primary source, which stays the authority.
+It does not replace the agencies: each recall links to the agency's own notice, which stays the authority.
