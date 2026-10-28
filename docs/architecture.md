@@ -20,7 +20,7 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (snap
 | Shared | `src/shared/` | types used by both server and web; `api.ts` holds the request and response types of the API |
 | States | `src/shared/states.ts` | the 50 states, DC and the territories, each with USPS code, name and FIPS code; records carry USPS codes, the map joins on FIPS |
 | Recall | `src/shared/recall.ts` | the `Recall` model every [source](glossary.md#source) normalizes to |
-| Ingest | `src/ingest/` | `distribution.ts` turns a [distribution pattern](glossary.md#distribution-pattern) into states; `openfda.ts` fetches and normalizes openFDA; `announcements.ts` fetches and normalizes FDA [announcements](glossary.md#announcement); `sources.ts` lists the sources; `snapshot.ts` builds and writes the [snapshot](glossary.md#snapshot); `main.ts` is `npm run ingest` |
+| Ingest | `src/ingest/` | `distribution.ts` turns a [distribution pattern](glossary.md#distribution-pattern) into states; `openfda.ts` fetches and normalizes openFDA; `announcements.ts` fetches and normalizes FDA [announcements](glossary.md#announcement); `sources.ts` lists the sources; `match.ts` merges announcements into their enforcement reports; `snapshot.ts` builds and writes the [snapshot](glossary.md#snapshot); `main.ts` is `npm run ingest` |
 | Tests | `test/` | vitest; `test/fixtures/distribution.json` holds real distribution patterns from openFDA food, drug and device enforcement reports, each with its expected result |
 
 ## Server
@@ -96,6 +96,22 @@ Each feed item becomes a Recall with `classification` null, `status` `active` an
 A page that fails to load or does not parse keeps its item: `product` and `reason` are the feed's title and description, `firm` is empty and `locationUnclear` is true. Only a feed that fails fails the source.
 
 A refresh reads only pages not read before. `buildSnapshot` hands the source its records from the previous snapshot; the source keys them by link URL and reuses any whose page was read (its `firm` is not empty), whether or not the page named a distribution. A failed page is read again. fda.gov is asked for at most one request a second.
+
+### Matching announcements to reports
+
+Once FDA classifies a recall, an enforcement report exists for what an announcement already announced. `buildSnapshot` runs `mergeAnnouncements` (`src/ingest/match.ts`) after every source is fetched, so the snapshot holds one Recall, not two.
+
+An announcement matches a report when all three hold:
+
+| Test | Rule |
+|---|---|
+| Category | the same `category`; records of different categories are never joined |
+| Firm | the firms agree once normalized: lower case, punctuation dropped, endings (Inc, LLC, Co, Corp, Ltd, Company) dropped; then every word of the shorter name is among the other's words |
+| Window | the two `initiatedAt` dates are at most 14 days apart (`MATCH_WINDOW_DAYS`); a record with no date matches nothing |
+
+A matched pair becomes the enforcement Recall, with the announcement's link appended to its `links`; the announcement leaves the snapshot. An announcement takes the closest report in time, and a report takes at most one announcement. An announcement with no match stays as it is, unclassified. A matched announcement is no longer among the previous snapshot's records, so its page is read again on each refresh.
+
+`test/fixtures/match.json` holds recorded pairs that match and near misses that do not (outside the window, or firms that differ), each naming the announcement's URL and the report's recall number.
 
 ### Recall model
 

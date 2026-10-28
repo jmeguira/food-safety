@@ -1,0 +1,275 @@
+{
+  "pairs": [
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/little-leaf-farms-announces-limited-voluntary-withdrawal-specific-lot-code-southwest-salad-kit-due",
+      "announcementFirm": "Little Leaf Farms",
+      "announcedAt": "2025-03-01",
+      "category": "food",
+      "recallNumber": "F-0637-2025",
+      "reportFirm": "LITTLE LEAF FARMS LLC",
+      "initiatedAt": "2025-02-28"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/one-source-nutrition-inc-issues-voluntary-nationwide-recall-vitality-capsules-due-presence-0",
+      "announcementFirm": "One Source Nutrition",
+      "announcedAt": "2025-03-03",
+      "category": "drug",
+      "recallNumber": "D-0281-2025",
+      "reportFirm": "One Source Nutrition, Inc,",
+      "initiatedAt": "2025-02-20"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/akt-trading-inc-recalls-prepared-vegetable-products-because-possible-health-risk",
+      "announcementFirm": "AKT Trading, Inc.",
+      "announcedAt": "2025-03-03",
+      "category": "food",
+      "recallNumber": "F-0679-2025",
+      "reportFirm": "AKT Trading Inc.",
+      "initiatedAt": "2025-02-18"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/liaoning-cheng-da-usa-inc-san-gabriel-california-recalling-hot-pot-sauce-because-it-may-contain",
+      "announcementFirm": "Liaoning Cheng Da USA Inc.",
+      "announcedAt": "2025-03-11",
+      "category": "food",
+      "recallNumber": "F-0672-2025",
+      "reportFirm": "Liaoning Cheng Da (USA) Inc",
+      "initiatedAt": "2025-03-04"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/bausch-lomb-announces-voluntary-recall-envista-aspiretm-envista-envytm-and-certain-envistar",
+      "announcementFirm": "Bausch + Lomb Corporation",
+      "announcedAt": "2025-04-07",
+      "category": "device",
+      "recallNumber": "Z-1680-2025",
+      "reportFirm": "Bausch & Lomb Surgical, Inc.",
+      "initiatedAt": "2025-03-27"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/element-112-llc-dba-madelines-patisserie-issues-allergy-alert-undeclared-wheat-croissants-and",
+      "announcementFirm": "Element 112, LLC dba Madeline’s Pâtisserie",
+      "announcedAt": "2025-05-20",
+      "category": "food",
+      "recallNumber": "H-0058-2025",
+      "reportFirm": "Element 112, LLC",
+      "initiatedAt": "2025-05-16"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/santa-monica-seafood-voluntarily-recalls-atlantic-salmon-portions-seafood-stuffing-due-undeclared",
+      "announcementFirm": "Santa Monica Seafood",
+      "announcedAt": "2025-05-24",
+      "category": "food",
+      "recallNumber": "H-0043-2025",
+      "reportFirm": "Santa Monica Seafood Company",
+      "initiatedAt": "2025-05-24"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/mellace-family-brands-california-inc-issues-allergy-alert-undeclared-milk-allergen-wegmans-semi",
+      "announcementFirm": "Mellace Family Brands California, Inc.",
+      "announcedAt": "2025-06-30",
+      "category": "food",
+      "recallNumber": "H-0278-2025",
+      "reportFirm": "Mellace Family Brands California Inc",
+      "initiatedAt": "2025-06-16"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/tandem-diabetes-care-issues-voluntary-medical-device-correction-select-tslim-x2-insulin-pumps",
+      "announcementFirm": "Tandem Diabetes Care, Inc.",
+      "announcedAt": "2025-08-12",
+      "category": "device",
+      "recallNumber": "Z-0232-2026",
+      "reportFirm": "Tandem Diabetes Care, Inc.",
+      "initiatedAt": "2025-08-05"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/publix-rich-creamy-vanilla-ice-cream-voluntarily-recalled-select-areas",
+      "announcementFirm": "Publix",
+      "announcedAt": "2025-10-17",
+      "category": "food",
+      "recallNumber": "H-0192-2026",
+      "reportFirm": "Publix Super Markets, Inc.",
+      "initiatedAt": "2025-10-14"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/new-hoque-sons-inc-issues-alert-uneviscerated-dry-ghoinnya-fish",
+      "announcementFirm": "New Hoque & Sons Inc.",
+      "announcedAt": "2025-10-29",
+      "category": "food",
+      "recallNumber": "H-0202-2026",
+      "reportFirm": "New Hoque and Sons, Inc.",
+      "initiatedAt": "2025-10-28"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/mangalm-llc-recalls-tops-mixed-fruit-jam-and-tops-strawberry-jam-product-because-possible-health",
+      "announcementFirm": "MANGALM LLC",
+      "announcedAt": "2025-11-18",
+      "category": "food",
+      "recallNumber": "H-0387-2026",
+      "reportFirm": "Mangalm LLC",
+      "initiatedAt": "2025-11-04"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/handelnine-global-limited-dba-navafresh-issues-nationwide-recall-rheumacare-capsules-virgo-uap",
+      "announcementFirm": "Handelnine Global Limited d/b/a Navafresh",
+      "announcedAt": "2025-12-22",
+      "category": "drug",
+      "recallNumber": "D-0332-2026",
+      "reportFirm": "HANDELNINE GLOBAL LLC",
+      "initiatedAt": "2025-12-22"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/gerber-products-company-announces-voluntary-recall-limited-batches-arrowroot-biscuits-out-abundance",
+      "announcementFirm": "Gerber Products Company",
+      "announcedAt": "2026-01-28",
+      "category": "food",
+      "recallNumber": "H-0518-2026",
+      "reportFirm": "Gerber Products Company dba Nestle Infant Nutrition",
+      "initiatedAt": "2026-01-26"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/why-not-natural-houston-texas-recalling-its-why-not-natural-organic-moringa-green-superfood-because",
+      "announcementFirm": "Why Not Natural",
+      "announcedAt": "2026-01-28",
+      "category": "food",
+      "recallNumber": "H-0510-2026",
+      "reportFirm": "Art Monkey LLC dba Why Not Natural",
+      "initiatedAt": "2026-01-28"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/slade-gorton-co-inc-recalls-one-lot-wellsley-farms-farm-raised-atlantic-salmon-sold-bjs-wholesale",
+      "announcementFirm": "Slade Gorton & Co., Inc.",
+      "announcedAt": "2026-02-12",
+      "category": "food",
+      "recallNumber": "H-0541-2026",
+      "reportFirm": "SLADE GORTON & CO., INC.",
+      "initiatedAt": "2026-02-10"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/wawa-issues-product-recall-16-oz-wawa-brand-iced-tea-lemon-iced-tea-diet-lemon-diet-lemonade-and",
+      "announcementFirm": "Wawa",
+      "announcedAt": "2026-04-03",
+      "category": "food",
+      "recallNumber": "H-0856-2026",
+      "reportFirm": "Wawa Beverage Company",
+      "initiatedAt": "2026-04-02"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/blueroot-health-expands-voluntary-allergy-alert-undeclared-egg-hazelnut-and-soy-vital-nutrients",
+      "announcementFirm": "Blueroot Health",
+      "announcedAt": "2026-04-10",
+      "category": "food",
+      "recallNumber": "H-0663-2026",
+      "reportFirm": "Blueroot Health, Inc.",
+      "initiatedAt": "2026-03-27"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/ferris-coffee-nut-co-issues-allergy-alert-undeclared-wheat-and-soy-frederiks-meijer-vanilla-bourbon",
+      "announcementFirm": "Ferris Coffee & Nut Co.",
+      "announcedAt": "2026-04-23",
+      "category": "food",
+      "recallNumber": "H-0774-2026",
+      "reportFirm": "Ferris Coffee and Nut Company, Inc.",
+      "initiatedAt": "2026-04-21"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/american-regent-inc-animal-health-issues-nationwide-recall-two-lots-adequanr-canine-and-two-lots",
+      "announcementFirm": "American Regent, Inc. Animal Health",
+      "announcedAt": "2026-08-03",
+      "category": "drug",
+      "recallNumber": "D-0865-2026",
+      "reportFirm": "American Regent, Inc.",
+      "initiatedAt": "2026-08-11"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/winco-foods-boise-id-recalling-following-salsa-bean-dip-trays-due-inclusion-recalled-peperoncini-gl",
+      "announcementFirm": "WinCo Foods LLC",
+      "announcedAt": "2026-10-02",
+      "category": "food",
+      "recallNumber": "H-0008-2027",
+      "reportFirm": "WinCo Foods LLC",
+      "initiatedAt": "2026-09-20"
+    }
+  ],
+  "misses": [
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/new-grains-gluten-free-bakery-issues-allergy-alert-undeclared-eggs-soy-and-milk-bakery-products",
+      "announcementFirm": "New Grains Gluten Free Bakery",
+      "announcedAt": "2025-05-09",
+      "category": "food",
+      "recallNumber": "F-0828-2025",
+      "reportFirm": "NEW GRAINS GLUTEN FREE BAKERY",
+      "initiatedAt": "2025-04-23",
+      "reason": "outside the window"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/tgd-cuts-llc-initiated-voluntary-recall-cucumber-bedner-growers-inc-which-had-potential-be",
+      "announcementFirm": "TGD Cuts, LLC.",
+      "announcedAt": "2025-06-04",
+      "category": "food",
+      "recallNumber": "H-0035-2025",
+      "reportFirm": "TGD Cuts, LLC",
+      "initiatedAt": "2025-05-20",
+      "reason": "outside the window"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/dollar-general-announces-voluntary-recall-clover-valleyr-instant-coffee-due-potential-presence-glass",
+      "announcementFirm": "Dollar General Corporation",
+      "announcedAt": "2025-08-12",
+      "category": "food",
+      "recallNumber": "H-0499-2025",
+      "reportFirm": "Dollar General Corporation",
+      "initiatedAt": "2025-07-27",
+      "reason": "outside the window"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/lee-k-ny-issue-allergy-alert-undeclared-allergen-milk-and-shrimp-stewed-aged-kimchi-wmackerel",
+      "announcementFirm": "Lee K of NY INC",
+      "announcedAt": "2025-09-23",
+      "category": "food",
+      "recallNumber": "H-0024-2026",
+      "reportFirm": "Lee K of NY Inc.",
+      "initiatedAt": "2025-09-08",
+      "reason": "outside the window"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/abbott-initiates-medical-device-correction-certain-freestyle-librer-3-and-freestyle-libre-3-plus",
+      "announcementFirm": "Abbott",
+      "announcedAt": "2026-01-15",
+      "category": "device",
+      "recallNumber": "Z-0961-2026",
+      "reportFirm": "Abbott Laboratories",
+      "initiatedAt": "2025-11-13",
+      "reason": "outside the window"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/optimal-balance-pharmacy-issues-voluntary-nationwide-recall-certain-lots-compounded-glutathione-200",
+      "announcementFirm": "Optimal Balance Pharmacy",
+      "announcedAt": "2026-08-20",
+      "category": "drug",
+      "recallNumber": "D-0851-2026",
+      "reportFirm": "OPTIMAL BALANCE PHARMACY",
+      "initiatedAt": "2026-08-05",
+      "reason": "outside the window"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/williams-farms-repack-llc-recalls-tomatoes-due-possible-salmonella-contamination",
+      "announcementFirm": "Williams Farms Repack LLC",
+      "announcedAt": "2025-05-02",
+      "category": "food",
+      "recallNumber": "F-0822-2025",
+      "reportFirm": "Williams Farms Produce Sales Co., Inc.",
+      "initiatedAt": "2025-04-30",
+      "reason": "firms differ"
+    },
+    {
+      "announcementUrl": "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/white-castle-frozen-food-division-recalls-frozen-4-count-cartons-original-sliders-due-undeclared",
+      "announcementFirm": "White Castle Food Products LLC",
+      "announcedAt": "2025-12-12",
+      "category": "food",
+      "recallNumber": "H-0416-2026",
+      "reportFirm": "White Castle System",
+      "initiatedAt": "2025-12-10",
+      "reason": "firms differ"
+    }
+  ]
+}
