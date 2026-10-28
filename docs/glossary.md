@@ -9,7 +9,13 @@ A public notice that a product is being pulled from the market. In this reposito
 The agency's grading of a recall, I, II or III, or null until it is classified. The Recall's `classification`; see [severity class](#severity-class).
 
 ### source
-An agency feed that recalls are read from, registered in `src/ingest/sources.ts`. The three openFDA endpoints are the sources today. See [architecture](architecture.md#ingest).
+An agency feed that recalls are read from, registered in `src/ingest/sources.ts`. The three openFDA endpoints and the FDA announcements feed are the sources today. See [architecture](architecture.md#ingest).
+
+### announcement
+A company's own notice of a recall, published on fda.gov and listed in FDA's recalls feed when the recall starts. It becomes a `fda-announcement` Recall that is unclassified until FDA grades it. See [architecture](architecture.md#fda-announcements).
+
+### unclassified
+A recall FDA has not yet graded: its `classification` is null. Every announcement starts so; the enforcement report that classifies it comes later.
 
 ### snapshot
 `data/snapshot.json`: every source's recalls and each source's refresh time, count and error, written by `npm run ingest`. See [architecture](architecture.md#snapshot).
