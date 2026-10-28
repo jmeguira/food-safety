@@ -45,6 +45,7 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (inge
 The reading is done in this order:
 
 1. Denials are removed: "No foreign distribution", "OUS: None", "Foreign/VA/DOD: None". "DOD/VA" is dropped so it is not read as Virginia.
+   US towns that share a country's name ("Holland, MI", "Lebanon, TN", "Panama City, FL") are dropped too, so they are not countries.
 2. A foreign marker (`OUS`, `Foreign`, `International`, `outside the US`) sets `foreign` and hides the text after it up to the next `US:` or `Domestic:` label, so the codes in "OUS: IN, KR" are countries, not states.
 3. Full names are matched longest first and blanked as they match, so "West Virginia" is not also Virginia, "New Mexico" is not also Mexico, and "Washington, DC" and "D.C." are DC, not Washington.
 4. Two-letter codes match only in upper case and as whole words, so "in", "or", "me" and "ok" in prose are never states.
