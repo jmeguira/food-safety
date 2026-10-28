@@ -1,4 +1,4 @@
-[**README**](README.md) · [architecture](docs/architecture.md) · [product](docs/product.md) · [glossary](docs/glossary.md)
+**README** · [architecture](docs/architecture.md) · [product](docs/product.md) · [glossary](docs/glossary.md)
 
 # food-safety
 

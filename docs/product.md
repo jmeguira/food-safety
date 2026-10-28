@@ -23,4 +23,4 @@ Not done: reading recalls from any [source](glossary.md#source), the map, the da
 
 ## What it does not do
 
-It does not replace the agencies: each recall links to the agency's own notice, which stays the authority.
+It does not replace the agencies: each recall is meant to link to the agency's own notice, which stays the authority.

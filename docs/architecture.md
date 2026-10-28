@@ -19,7 +19,7 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (inge
 | Severity | `src/shared/severity.ts`, `src/web/severity.ts` | the [severity class](glossary.md#severity-class) type, and its label, color and meaning for display |
 | Shared | `src/shared/` | types used by both server and web, such as `Health` |
 | Ingest | `src/ingest/` | reserved for reading [sources](glossary.md#source); empty |
-| Tests | `test/` | vitest; `test/fixtures/` holds recorded source responses |
+| Tests | `test/` | vitest; `test/fixtures/` is empty, reserved for recorded source responses once ingestion exists |
 
 ## Server
 
@@ -41,5 +41,5 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (inge
 | Rule | Kept by |
 |---|---|
 | The web UI reads data only through the API | no server code is imported by `src/web/`; shared code is types and constants |
-| No test reaches the network | sources are tested against `test/fixtures/` |
+| No test reaches the network | sources, once ingested, are tested against recorded responses in `test/fixtures/` |
 | Dependencies are pure JavaScript | the build image has no compilers |
