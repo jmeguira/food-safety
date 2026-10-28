@@ -1,0 +1,286 @@
+{
+  "meta": {
+    "results": {
+      "skip": 0,
+      "limit": 3,
+      "total": 3
+    }
+  },
+  "results": [
+    {
+      "status": "Terminated",
+      "city": "Dublin",
+      "state": "OH",
+      "country": "United States",
+      "classification": "Class II",
+      "openfda": {
+        "application_number": [
+          "ANDA077857"
+        ],
+        "brand_name": [
+          "ENOXAPARIN SODIUM"
+        ],
+        "generic_name": [
+          "ENOXAPARIN SODIUM"
+        ],
+        "manufacturer_name": [
+          "Sandoz Inc"
+        ],
+        "product_ndc": [
+          "0781-3238",
+          "0781-3246",
+          "0781-3256",
+          "0781-3262",
+          "0781-3268",
+          "0781-3298",
+          "0781-3299"
+        ],
+        "product_type": [
+          "HUMAN PRESCRIPTION DRUG"
+        ],
+        "route": [
+          "SUBCUTANEOUS"
+        ],
+        "substance_name": [
+          "ENOXAPARIN SODIUM"
+        ],
+        "rxcui": [
+          "854228",
+          "854235",
+          "854238",
+          "854241",
+          "854245",
+          "854248",
+          "854252"
+        ],
+        "spl_id": [
+          "82c50153-58b8-4c35-8fc2-1d9b3d3ac7de"
+        ],
+        "spl_set_id": [
+          "38f60bd8-b518-4098-a808-b8f5a3ae6a3a"
+        ],
+        "package_ndc": [
+          "0781-3238-01",
+          "0781-3238-63",
+          "0781-3246-02",
+          "0781-3246-64",
+          "0781-3256-03",
+          "0781-3256-66",
+          "0781-3262-04",
+          "0781-3262-68",
+          "0781-3268-05",
+          "0781-3268-69",
+          "0781-3298-04",
+          "0781-3298-68",
+          "0781-3299-05",
+          "0781-3299-69"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "unii": [
+          "8NZ41MIK1O"
+        ]
+      },
+      "product_type": "Drugs",
+      "event_id": "89450",
+      "recalling_firm": "CARDINAL HEALTHCARE",
+      "address_1": "7200 Cardinal Pl W",
+      "address_2": "",
+      "postal_code": "43017-1094",
+      "voluntary_mandated": "Voluntary: Firm initiated",
+      "initial_firm_notification": "Letter",
+      "distribution_pattern": "Nationwide USA",
+      "recall_number": "D-0179-2024",
+      "product_description": "Enoxaparin Sodium Injection, USP, 150MG/ML Single-Dose Syringes with Automatic Safety Device, For Subcutaneous Injection, Ten 1 mL Syringes per box, Rx Only, Sandoz Inc, Princeton, NJ 08540.  NDC: 0781-3299-69",
+      "product_quantity": "2 units",
+      "reason_for_recall": "CGMP Deviations: Products were exposed to temperatures outside of the products labeled storage conditions.",
+      "recall_initiation_date": "20220126",
+      "center_classification_date": "20231226",
+      "termination_date": "20240929",
+      "report_date": "20240103",
+      "code_info": "Batch SAH06821A",
+      "more_code_info": ""
+    },
+    {
+      "status": "Ongoing",
+      "city": "Parsippany",
+      "state": "NJ",
+      "country": "United States",
+      "classification": "Class III",
+      "openfda": {
+        "application_number": [
+          "ANDA072695"
+        ],
+        "brand_name": [
+          "NORTREL"
+        ],
+        "generic_name": [
+          "NORETHINDRONE AND ETHINYL ESTRADIOL"
+        ],
+        "manufacturer_name": [
+          "Teva Pharmaceuticals USA, Inc."
+        ],
+        "product_ndc": [
+          "0555-9008",
+          "0555-9009",
+          "0555-9010"
+        ],
+        "product_type": [
+          "HUMAN PRESCRIPTION DRUG"
+        ],
+        "rxcui": [
+          "310463",
+          "312033",
+          "748797",
+          "749858",
+          "749869",
+          "749879",
+          "751868",
+          "751870",
+          "751871"
+        ],
+        "spl_id": [
+          "9ac007e4-792d-4122-8daf-456dea28f82f"
+        ],
+        "spl_set_id": [
+          "140c50d6-c931-423a-9aa0-526eae7ab93c"
+        ],
+        "package_ndc": [
+          "0555-9009-80",
+          "0555-9009-42",
+          "0555-9010-79",
+          "0555-9010-58",
+          "0555-9008-79",
+          "0555-9008-67"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "M0447349",
+          "N0000175602",
+          "N0000175825",
+          "N0000000100"
+        ],
+        "pharm_class_cs": [
+          "Progesterone Congeners [CS]"
+        ],
+        "pharm_class_epc": [
+          "Progestin [EPC]",
+          "Estrogen [EPC]"
+        ],
+        "pharm_class_moa": [
+          "Estrogen Receptor Agonists [MoA]"
+        ],
+        "unii": [
+          "T18F433X4S",
+          "423D2T571U"
+        ]
+      },
+      "product_type": "Drugs",
+      "event_id": "93867",
+      "recalling_firm": "Teva Pharmaceuticals USA, Inc",
+      "address_1": "400 Interpace Pkwy Bldg A",
+      "address_2": "N/A",
+      "postal_code": "07054-1120",
+      "voluntary_mandated": "Voluntary: Firm initiated",
+      "initial_firm_notification": "Letter",
+      "distribution_pattern": "nationwide",
+      "recall_number": "D-0321-2024",
+      "product_description": "Nortrel (norethindrone and ethinyl estradiol tablets USP) 0.5/35, packaged in cartons, each carton contains 3 blister cards, each card contains 28 tablets, Rx only, TEVA PHARMACEUTICALS USA, INC., North Wales, PA 19454, NDC 0555-9008-67",
+      "product_quantity": "12,916 cartons",
+      "reason_for_recall": "Discoloration: discolored tablets (shades of blue) mixed in with the white inert remainder tablets.",
+      "recall_initiation_date": "20240125",
+      "center_classification_date": "20240212",
+      "report_date": "20240221",
+      "code_info": "Lot #: 100042978, Exp 7/31/2024"
+    },
+    {
+      "status": "Terminated",
+      "city": "IRVING",
+      "state": "TX",
+      "country": "United States",
+      "classification": "Class II",
+      "openfda": {
+        "application_number": [
+          "NDA216632"
+        ],
+        "brand_name": [
+          "CABTREO"
+        ],
+        "generic_name": [
+          "CLINDAMYCIN PHOSPHATE/BENZOYL PEROXIDE/ADAPALENE"
+        ],
+        "manufacturer_name": [
+          "Bausch Health US LLC"
+        ],
+        "product_ndc": [
+          "0187-0006"
+        ],
+        "product_type": [
+          "HUMAN PRESCRIPTION DRUG"
+        ],
+        "route": [
+          "TOPICAL"
+        ],
+        "substance_name": [
+          "CLINDAMYCIN PHOSPHATE",
+          "BENZOYL PEROXIDE",
+          "ADAPALENE"
+        ],
+        "rxcui": [
+          "2668198",
+          "2668204"
+        ],
+        "spl_id": [
+          "338bc721-434d-cbc2-e063-6394a90abc47"
+        ],
+        "spl_set_id": [
+          "9468da0f-9978-4c58-8135-0274c3415084"
+        ],
+        "package_ndc": [
+          "0187-0006-10",
+          "0187-0006-25",
+          "0187-0006-35"
+        ],
+        "is_original_packager": [
+          true
+        ],
+        "nui": [
+          "N0000175607",
+          "M0018962"
+        ],
+        "pharm_class_epc": [
+          "Retinoid [EPC]"
+        ],
+        "pharm_class_cs": [
+          "Retinoids [CS]"
+        ],
+        "unii": [
+          "EH6D7113I8",
+          "W9WZN9A0GM",
+          "1L4806J2QF"
+        ]
+      },
+      "product_type": "Drugs",
+      "event_id": "94023",
+      "recalling_firm": "MCKESSON CORPORATION",
+      "address_1": "6555 NORTH STATE HIGHWA",
+      "address_2": "N/A",
+      "postal_code": "75039",
+      "voluntary_mandated": "Voluntary: Firm initiated",
+      "initial_firm_notification": "E-Mail",
+      "distribution_pattern": "Nationwide in the US",
+      "recall_number": "D-0347-2024",
+      "product_description": "CABTREO (clindamycin phosphate, adapalene and benzoyl peroxide) Topical Gel 1.2%/0.15%/3.1%, Not for Oral, Ophthalmic or Intravaginal Use, Rx Only, Net Wt. 50g, Distributed by Bausch Health US, LLC Bridgewater, NJ 08807 USA, Manufactured by: Bausch Health Companies, Inc. Laval Quebec H7L 448, Canada, NDC 0187-0006-25.",
+      "product_quantity": "42 units",
+      "reason_for_recall": "CGMP Deviations: Product was stored outside labeled storage temperature requirements. Product was exposed to controlled room temperature environment instead of remaining refrigerated.",
+      "recall_initiation_date": "20240212",
+      "center_classification_date": "20240222",
+      "termination_date": "20241001",
+      "report_date": "20240228",
+      "code_info": "Lot: 7001796, Exp 05/31/2025"
+    }
+  ]
+}
