@@ -1,6 +1,7 @@
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import type { Recall } from "../shared/recall.js";
+import { mergeAnnouncements } from "./match.js";
 import type { FetchFn } from "./openfda.js";
 import type { Source } from "./sources.js";
 
@@ -41,7 +42,7 @@ export async function buildSnapshot(
       };
     }
   }
-  return { generatedAt: now.toISOString(), sources: status, recalls };
+  return { generatedAt: now.toISOString(), sources: status, recalls: mergeAnnouncements(recalls) };
 }
 
 export async function readSnapshot(path: string): Promise<Snapshot | null> {
