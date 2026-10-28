@@ -91,10 +91,22 @@ describe("announcements", () => {
     expect(byUrl(again, HAIFA)).toEqual(byUrl(first, HAIFA));
   });
 
+  it("cache: a page read without a distribution is not read again", async () => {
+    const first = await run();
+    const bare = first.map((r) => (r.firm === "" ? r : { ...r, distributionText: "", states: [] }));
+    const urls: string[] = [];
+    const spy = (async (url, init) => {
+      urls.push(String(url));
+      return fixtureFetch(url, init);
+    }) as typeof fetch;
+    await run(bare, spy);
+    expect(urls.filter((u) => !u.endsWith("rss.xml"))).toEqual([TONIGHT]);
+  });
+
   it("asks fda.gov for one page a second", async () => {
     sleeps.length = 0;
     await run();
-    // Seven pages follow the feed; each request after the first waits.
-    expect(sleeps).toEqual(Array(7).fill(1000));
+    // Eight pages follow the feed; each request waits for the one before.
+    expect(sleeps).toEqual(Array(8).fill(1000));
   });
 });

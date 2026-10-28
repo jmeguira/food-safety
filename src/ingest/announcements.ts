@@ -157,12 +157,13 @@ export async function fetchAnnouncements(fetchFn: FetchFn, deps: AnnouncementDep
   if (!res.ok) throw new Error(`FDA recalls feed returned ${res.status}`);
   const items = parseFeed(await res.text());
 
-  // A recall with no distribution text is one whose page failed or named no distribution; it is read again.
+  // A failed page leaves the firm empty (the feed does not name it), so it is read again; a page with no distribution is not.
   const read = new Map<string, Recall>();
-  for (const r of await previous()) if (r.distributionText !== "") read.set(r.links[0]?.url, r);
+  for (const r of await previous()) if (r.firm !== "") read.set(r.links[0]?.url, r);
 
   const out: Announcement[] = [];
-  let requested = false;
+  // The feed was just requested.
+  let requested = true;
   for (const item of items) {
     const cached = read.get(item.url);
     if (cached) {
