@@ -15,4 +15,5 @@ For whoever changes this repository. What the product is: [product](docs/product
 - No test reaches the network.
 - [Sources](docs/glossary.md#source) are tested against recorded responses in `test/fixtures/`.
 - Dependencies are pure JavaScript: the build image has no compilers.
+- Every [source](docs/glossary.md#source) normalizes to the [Recall](docs/glossary.md#recall) model; nothing downstream reads a source's raw field names.
 - The web UI reads data only through the [API](docs/glossary.md#api).
