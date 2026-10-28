@@ -4,7 +4,8 @@ import { fetchEndpoint, normalizeReport, type Endpoint, type FetchFn, type OpenF
 
 export interface Source {
   id: RecallSource;
-  fetch(fetchFn: FetchFn): Promise<unknown[]>;
+  /** `previous` holds this source's records from the last snapshot. */
+  fetch(fetchFn: FetchFn, previous: Recall[]): Promise<unknown[]>;
   normalize(raw: unknown): Recall;
 }
 
@@ -16,7 +17,7 @@ const openFda = (endpoint: Endpoint): Source => ({
 
 const announcements: Source = {
   id: "fda-announcement",
-  fetch: (fetchFn) => fetchAnnouncements(fetchFn),
+  fetch: (fetchFn, previous) => fetchAnnouncements(fetchFn, previous),
   normalize: (raw) => normalizeAnnouncement(raw as Announcement),
 };
 

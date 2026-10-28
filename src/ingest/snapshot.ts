@@ -27,12 +27,12 @@ export async function buildSnapshot(
   const status: Record<string, SourceStatus> = {};
   const recalls: Recall[] = [];
   for (const source of sources) {
+    const kept = previous?.recalls.filter((r) => r.source === source.id) ?? [];
     try {
-      const fresh = (await source.fetch(fetchFn)).map((raw) => source.normalize(raw));
+      const fresh = (await source.fetch(fetchFn, kept)).map((raw) => source.normalize(raw));
       recalls.push(...fresh);
       status[source.id] = { refreshedAt: now.toISOString(), count: fresh.length, error: null };
     } catch (e) {
-      const kept = previous?.recalls.filter((r) => r.source === source.id) ?? [];
       recalls.push(...kept);
       status[source.id] = {
         refreshedAt: previous?.sources[source.id]?.refreshedAt ?? null,

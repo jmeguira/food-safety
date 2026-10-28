@@ -1,11 +1,9 @@
 import type { Recall, RecallCategory } from "../shared/recall.js";
 import { parseDistribution } from "./distribution.js";
 import type { FetchFn } from "./openfda.js";
-import { readSnapshot } from "./snapshot.js";
 
 export const FEED_URL = "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/recalls/rss.xml";
 const ORIGIN = "https://www.fda.gov";
-const SNAPSHOT_PATH = "data/snapshot.json";
 // fda.gov is asked for at most one page a second.
 const REQUEST_INTERVAL_MS = 1000;
 const REQUEST_TIMEOUT_MS = 60_000;
@@ -139,18 +137,18 @@ export function normalizeAnnouncement({ item, page, cached }: Announcement): Rec
 }
 
 export interface AnnouncementDeps {
-  /** The announcements the last snapshot holds, whose pages are not read again. */
-  previous?: () => Promise<Recall[]>;
   sleep?: (ms: number) => Promise<void>;
 }
 
-const lastSnapshot = async () =>
-  (await readSnapshot(SNAPSHOT_PATH))?.recalls.filter((r) => r.source === "fda-announcement") ?? [];
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 /** The feed's items with their pages. A page that fails keeps its item; only a feed that fails fails the source. */
-export async function fetchAnnouncements(fetchFn: FetchFn, deps: AnnouncementDeps = {}): Promise<Announcement[]> {
-  const { previous = lastSnapshot, sleep = wait } = deps;
+export async function fetchAnnouncements(
+  fetchFn: FetchFn,
+  previous: Recall[] = [],
+  deps: AnnouncementDeps = {},
+): Promise<Announcement[]> {
+  const { sleep = wait } = deps;
   const get = (url: string) => fetchFn(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
 
   const res = await get(FEED_URL);
@@ -159,7 +157,7 @@ export async function fetchAnnouncements(fetchFn: FetchFn, deps: AnnouncementDep
 
   // A failed page leaves the firm empty (the feed does not name it), so it is read again; a page with no distribution is not.
   const read = new Map<string, Recall>();
-  for (const r of await previous()) if (r.firm !== "") read.set(r.links[0]?.url, r);
+  for (const r of previous) if (r.source === "fda-announcement" && r.firm !== "") read.set(r.links[0]?.url, r);
 
   const out: Announcement[] = [];
   // The feed was just requested.

@@ -16,7 +16,7 @@ const TONIGHT = `${BASE}tonight-we-ride-llc-issues-voluntary-recall-ultimate-for
 
 const sleeps: number[] = [];
 const run = async (previous: Recall[] = [], fetchFn: typeof fetch = fixtureFetch) => {
-  const raw = await fetchAnnouncements(fetchFn, { previous: async () => previous, sleep: async (ms) => void sleeps.push(ms) });
+  const raw = await fetchAnnouncements(fetchFn, previous, { sleep: async (ms) => void sleeps.push(ms) });
   return raw.map(normalizeAnnouncement);
 };
 const byUrl = (recalls: Recall[], url: string) => recalls.find((r) => r.links[0].url === url)!;
