@@ -2,12 +2,15 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { Hono } from "hono";
-import type { Health } from "../shared/health.js";
+import type { Health } from "../shared/api.js";
+import type { Snapshot } from "../ingest/snapshot.js";
+import { apiRoutes } from "./api.js";
 
-export function createApp(webRoot: string): Hono {
+export function createApp(webRoot: string, current: () => Snapshot | null = () => null): Hono {
   const app = new Hono();
 
   app.get("/api/health", (c) => c.json<Health>({ ok: true }));
+  app.route("/api", apiRoutes(current));
   app.all("/api/*", (c) => c.json({ error: "not found" }, 404));
 
   // serveStatic resolves its root against the working directory.
