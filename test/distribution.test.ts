@@ -110,3 +110,18 @@ describe("foreign and unclear", () => {
     expect(parseDistribution("")).toMatchObject({ unclear: true });
   });
 });
+
+describe("towns that share a country's name", () => {
+  it.each([
+    ["Holland, MI", ["MI"]],
+    ["Lebanon, TN", ["TN"]],
+    ["Panama City, FL", ["FL"]],
+    ["Peru, Illinois", ["IL"]],
+  ])("%s is a US town", (text, states) => {
+    expect(parseDistribution(text)).toMatchObject({ states, foreign: false, unclear: false });
+  });
+
+  it("still reads the country alone as foreign", () => {
+    expect(parseDistribution("CA and Panama")).toMatchObject({ states: ["CA"], foreign: true });
+  });
+});

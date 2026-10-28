@@ -35,6 +35,11 @@ const COUNTRIES =
   "Qatar|Romania|Russia|Saudi Arabia|Scotland|Singapore|Slovakia|Slovenia|South Africa|Spain|Sweden|Switzerland|Taiwan|" +
   "Thailand|Trinidad|Turks|Uganda|Ukraine|United Arab Emirates|United Kingdom|Uruguay|Venezuela|Vietnam|EMEA";
 const COUNTRY_RE = new RegExp(`\\b(?:${COUNTRIES})\\b`, "i");
+// US towns that share a country's name: "Holland, MI", "Panama City, FL".
+const TOWN_RE = new RegExp(
+  `\\b(?:Holland|Lebanon|Panama|Peru|Jordan|Poland|Norway|Cuba|Sweden|Denmark)\\b(?=,\\s*(?:${STATES.map((s) => `${s.code}|${escape(s.name)}`).join("|")})\\b|\\s+City\\b)`,
+  "gi",
+);
 const COUNTRY_ABBREVIATION_RE = /\b(?:UAE|UK)\b/;
 
 // "No foreign distribution", "did not ship to foreign consignees", "OUS: None",
@@ -57,7 +62,7 @@ const NATIONWIDE_STATES = STATES.filter((s) => !TERRITORY_CODES.has(s.code)).map
 const CODES = new Set(STATES.map((s) => s.code));
 
 export function parseDistribution(text: string): Distribution {
-  let rest = text.replace(NEGATED_FOREIGN, " ").replace(GOVERNMENT, " ");
+  let rest = text.replace(NEGATED_FOREIGN, " ").replace(GOVERNMENT, " ").replace(TOWN_RE, " ");
   let foreign = rest.search(FOREIGN_MARKER) >= 0 || WORLDWIDE.test(rest);
   const nationwide = NATIONWIDE.test(rest);
 
