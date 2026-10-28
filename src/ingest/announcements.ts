@@ -1,4 +1,3 @@
-import { XMLParser } from "fast-xml-parser";
 import type { Recall, RecallCategory } from "../shared/recall.js";
 import { parseDistribution } from "./distribution.js";
 import type { FetchFn } from "./openfda.js";
@@ -56,16 +55,18 @@ function pubDate(s: string): string | null {
 }
 
 export function parseFeed(xml: string): FeedItem[] {
-  const parsed = new XMLParser({ parseTagValue: false }).parse(xml) as {
-    rss?: { channel?: { item?: Record<string, string> | Record<string, string>[] } };
+  if (!/<rss[\s>]/.test(xml) || !/<channel[\s>]/.test(xml)) throw new Error("FDA recalls feed is not an RSS feed");
+  const tag = (block: string, name: string) => {
+    const m = new RegExp(`<${name}(?:\\s[^>]*)?>([\\s\\S]*?)</${name}>`).exec(block);
+    if (!m) return "";
+    const cdata = /^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/.exec(m[1]);
+    return (cdata ? cdata[1] : decode(m[1])).trim();
   };
-  const items = parsed.rss?.channel?.item;
-  if (!parsed.rss?.channel) throw new Error("FDA recalls feed is not an RSS feed");
-  return [items ?? []].flat().map((i) => ({
-    url: new URL(i.link, ORIGIN).href.replace(/^http:/, "https:"),
-    title: i.title ?? "",
-    description: i.description ?? "",
-    pubDate: i.pubDate ?? "",
+  return [...xml.matchAll(/<item[\s>][\s\S]*?<\/item>/g)].map(([block]) => ({
+    url: new URL(tag(block, "link"), ORIGIN).href.replace(/^http:/, "https:"),
+    title: tag(block, "title"),
+    description: tag(block, "description"),
+    pubDate: tag(block, "pubDate"),
   }));
 }
 
