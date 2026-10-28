@@ -20,7 +20,7 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (snap
 | Shared | `src/shared/` | types used by both server and web; `api.ts` holds the request and response types of the API |
 | States | `src/shared/states.ts` | the 50 states, DC and the territories, each with USPS code, name and FIPS code; records carry USPS codes, the map joins on FIPS |
 | Recall | `src/shared/recall.ts` | the `Recall` model every [source](glossary.md#source) normalizes to |
-| Ingest | `src/ingest/` | `distribution.ts` turns a [distribution pattern](glossary.md#distribution-pattern) into states; `openfda.ts` fetches and normalizes openFDA; `sources.ts` lists the sources; `snapshot.ts` builds and writes the [snapshot](glossary.md#snapshot); `main.ts` is `npm run ingest` |
+| Ingest | `src/ingest/` | `distribution.ts` turns a [distribution pattern](glossary.md#distribution-pattern) into states; `openfda.ts` fetches and normalizes openFDA; `announcements.ts` fetches and normalizes FDA [announcements](glossary.md#announcement); `sources.ts` lists the sources; `snapshot.ts` builds and writes the [snapshot](glossary.md#snapshot); `main.ts` is `npm run ingest` |
 | Tests | `test/` | vitest; `test/fixtures/distribution.json` holds real distribution patterns from openFDA food, drug and device enforcement reports, each with its expected result |
 
 ## Server
@@ -76,9 +76,26 @@ Text in all capitals that uses "IN" or "OR" as words reads as the states Indiana
 
 ## Ingest
 
-`npm run ingest` fetches each source in `SOURCES` (`src/ingest/sources.ts`, each `{ id, fetch, normalize }`), normalizes every record to a [Recall](glossary.md#recall), and writes the snapshot. `--fixtures` answers the openFDA requests from `test/fixtures/openfda/` instead of the network.
+`npm run ingest` fetches each source in `SOURCES` (`src/ingest/sources.ts`, each `{ id, fetch, normalize }`), normalizes every record to a [Recall](glossary.md#recall), and writes the snapshot. `--fixtures` answers the openFDA requests from `test/fixtures/openfda/` and the fda.gov requests from `test/fixtures/announcements/` instead of the network.
 
 openFDA serves food, drug and device enforcement reports at `https://api.fda.gov/<endpoint>/enforcement.json`. A request returns at most 1,000 reports and skips at most 25,000, so the fetcher reads one year of `report_date` at a time and halves a window whose total exceeds what skipping can reach. A 404 means an empty window; any other failed request fails the source. `OPENFDA_API_KEY`, when set, is sent as `api_key`; none is required.
+
+### FDA announcements
+
+A company announces a recall on fda.gov when it starts, often weeks before FDA classifies it and an enforcement report exists. The `fda-announcement` source reads FDA's recalls RSS feed (`https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/recalls/rss.xml`), so such a recall is in the snapshot within hours of the announcement as an [unclassified](glossary.md#unclassified) one. The feed holds only recent announcements; history comes from the enforcement reports.
+
+Each feed item becomes a Recall with `classification` null, `status` `active` and `id` `fda-announcement:` plus the announcement URL's path; its one link is the announcement. `reportedAt` is the feed's publish date. The item's page supplies the rest:
+
+| Recall field | From the page |
+|---|---|
+| `category` | Product Type: Drugs is `drug`, Medical Devices `device`, anything else `food` (supplements, and types with no category of their own) |
+| `product`, `reason`, `firm` | Product Description, Reason for Announcement, Company Name |
+| `initiatedAt` | Company Announcement Date |
+| `distributionText` | the announcement's sentences that mention distribution, shipping, sale or states; the states come from `parseDistribution` over that text, so the firm's own address is not read as a destination |
+
+A page that fails to load or does not parse keeps its item: `product` and `reason` are the feed's title and description, `firm` is empty and `locationUnclear` is true. Only a feed that fails fails the source.
+
+A refresh reads only pages not read before. `buildSnapshot` hands the source its records from the previous snapshot; the source keys them by link URL and reuses any whose page was read (its `firm` is not empty), whether or not the page named a distribution. A failed page is read again. fda.gov is asked for at most one request a second.
 
 ### Recall model
 
@@ -100,7 +117,7 @@ Defined in `src/shared/recall.ts`; the rest of the code never reads a source's o
 | `codeInfo` | both code fields joined, null when blank | `code_info`, `more_code_info` |
 | `voluntary` | true when firm initiated, false when mandated, else null | `voluntary_mandated` |
 | `initiatedAt`, `reportedAt`, `classifiedAt`, `closedAt` | ISO dates, null when absent | `recall_initiation_date`, `report_date`, `center_classification_date`, `termination_date` |
-| `links` | `{ label, url }` list; one "openFDA record" link to `search=recall_number:"<number>"` | |
+| `links` | `{ label, url }` list; one "openFDA record" link to `search=recall_number:"<number>"`, or for an announcement one "FDA announcement" link | |
 
 ### Snapshot
 
