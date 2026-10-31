@@ -155,3 +155,21 @@ it("freshness: says when each source was refreshed and flags a failed one", asyn
   expect(section.getByRole("alert").textContent).toContain("Refresh failed: HTTP 503");
   expect(section.getAllByRole("alert")).toHaveLength(1);
 });
+
+it("window: keeps no label or shading from the old window while the new one loads", async () => {
+  await open();
+  vi.mocked(fetch).mockImplementation(() => new Promise(() => {}));
+  choose("Began within", "all");
+  await waitFor(() => expect(screen.getByText("Loading…")).toBeTruthy());
+  expect(screen.queryByText("last 12 months", { selector: "strong" })).toBeNull();
+  expect(screen.queryByText("all ongoing", { selector: "strong" })).toBeNull();
+  expect(document.querySelector("path[data-state]")).toBeNull();
+});
+
+it("freshness: says so when the meta request fails", async () => {
+  vi.mocked(fetch).mockImplementation(async (url) =>
+    String(url).startsWith("/api/meta") ? new Response("", { status: 500 }) : new Response(JSON.stringify(full)),
+  );
+  render(<MapPage />);
+  expect(await screen.findByText("Freshness unavailable.")).toBeTruthy();
+});

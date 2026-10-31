@@ -49,8 +49,10 @@ export default function MapPage() {
   const [category, setCategory] = useState<RecallCategory | "all">("all");
   const [cls, setCls] = useState<SeverityClass | "all">("all");
   const [includeNationwide, setIncludeNationwide] = useState(false);
-  const [states, setStates] = useState<StatesResponse | null>(null);
+  /** The response with the window it answers, so the label never runs ahead of the data. */
+  const [loaded, setLoaded] = useState<{ window: WindowChoice; states: StatesResponse } | null>(null);
   const [meta, setMeta] = useState<MetaResponse | null>(null);
+  const [metaFailed, setMetaFailed] = useState(false);
   const [error, setError] = useState<string | null>(null);
   /** Set by a click on a state; the recall list for it reads this and `window`. */
   const [, setSelected] = useState<string | null>(null);
@@ -59,13 +61,15 @@ export default function MapPage() {
 
   useEffect(() => {
     let current = true;
+    setLoaded(null);
+    setError(null);
     const query: StatesQuery & Record<string, string | undefined> = {
       since: sinceFor(window),
       category: category === "all" ? undefined : category,
     };
     const qs = new URLSearchParams(Object.entries(query).filter((e): e is [string, string] => !!e[1])).toString();
     getJson<StatesResponse>(`/api/states${qs ? `?${qs}` : ""}`).then(
-      (s) => current && (setStates(s), setError(null)),
+      (s) => current && setLoaded({ window, states: s }),
       (e: Error) => current && setError(e.message),
     );
     return () => {
@@ -74,20 +78,23 @@ export default function MapPage() {
   }, [window, category]);
 
   useEffect(() => {
-    getJson<MetaResponse>("/api/meta").then(setMeta, () => setMeta(null));
+    getJson<MetaResponse>("/api/meta").then(setMeta, () => setMetaFailed(true));
   }, []);
 
+  const states = loaded?.states ?? null;
   const shown = (code: string) => shownFor(states?.[code], states?.nationwide, includeNationwide, cls);
   const nationwide = shownFor(states?.nationwide, undefined, false, cls);
   const active = hovered ?? focused;
-  const windowLabel = WINDOWS.find((w) => w.value === window)!.label;
+  const windowLabel = loaded && WINDOWS.find((w) => w.value === loaded.window)!.label;
 
   return (
     <main>
       <h1>Map</h1>
-      <p>
-        Active recalls that began within: <strong>{windowLabel}</strong>
-      </p>
+      {windowLabel && (
+        <p>
+          Active recalls that began within: <strong>{windowLabel}</strong>
+        </p>
+      )}
 
       <form onSubmit={(e) => e.preventDefault()}>
         <label>
@@ -212,6 +219,7 @@ export default function MapPage() {
         <p>A state is shaded by its most severe active recall.</p>
       </section>
 
+      {metaFailed && <p role="alert">Freshness unavailable.</p>}
       {meta && (
         <section aria-label="Data freshness">
           <h2>Data freshness</h2>
