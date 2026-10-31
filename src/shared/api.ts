@@ -11,6 +11,15 @@ export interface RecallsQuery {
   class?: SeverityClass;
   /** USPS code; matches recalls that name the state and nationwide ones. */
   state?: string;
+  /** `YYYY-MM-DD`; keeps recalls begun on or after it. A recall begins on `initiatedAt`, else `reportedAt`; one with neither is left out. */
+  since?: string;
+}
+
+/** Query parameters of `GET /api/states`; each one given narrows what is counted. */
+export interface StatesQuery {
+  category?: RecallCategory;
+  /** `YYYY-MM-DD`; counts recalls begun on or after it, as in `RecallsQuery`. */
+  since?: string;
 }
 
 export type RecallsResponse = Recall[];
