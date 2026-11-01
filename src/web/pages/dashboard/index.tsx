@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Bar,
   BarChart,
@@ -236,20 +237,25 @@ function useStateCounts({ category, from, to }: Filters): Loaded<StatsStatesResp
     category ? null : `/api/stats/states${query({ from, to })}`,
   );
   const recalls = useApi<Recall[]>(category ? `/api/recalls${query({ category })}` : null);
+  const list = recalls && "data" in recalls ? recalls.data : null;
+  const tally = useMemo(() => (list ? tallyStates(list, from, to) : null), [list, from, to]);
   if (!category) return stats;
-  return loading(recalls, (list) => {
-    const out: StatsStatesResponse = {};
-    for (const r of list) {
-      const d = began(r);
-      if (!d || (from && d < from) || (to && d > to)) continue;
-      const cls = r.classification ?? "unclassified";
-      for (const key of r.nationwide ? ["nationwide"] : r.states) {
-        out[key] ??= { I: 0, II: 0, III: 0, unclassified: 0 };
-        out[key][cls]++;
-      }
+  if (tally) return { data: tally };
+  return recalls && "error" in recalls ? recalls : null;
+}
+
+function tallyStates(list: Recall[], from?: string, to?: string): StatsStatesResponse {
+  const out: StatsStatesResponse = {};
+  for (const r of list) {
+    const d = began(r);
+    if (!d || (from && d < from) || (to && d > to)) continue;
+    const cls = r.classification ?? "unclassified";
+    for (const key of r.nationwide ? ["nationwide"] : r.states) {
+      out[key] ??= { I: 0, II: 0, III: 0, unclassified: 0 };
+      out[key][cls]++;
     }
-    return out;
-  });
+  }
+  return out;
 }
 
 function States({ filters }: { filters: Filters }) {

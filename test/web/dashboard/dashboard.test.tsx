@@ -147,3 +147,36 @@ it("table gives every chart a table of its numbers", async () => {
     "20255110" + "7",
   ]);
 });
+
+it("a request that never answers is aborted when the page closes", async () => {
+  const signals: AbortSignal[] = [];
+  vi.stubGlobal(
+    "fetch",
+    vi.fn((_url: string, init?: RequestInit) => {
+      signals.push(init!.signal!);
+      return new Promise(() => {});
+    }),
+  );
+  const view = open();
+  await waitFor(() => expect(signals.length).toBeGreaterThan(0));
+  expect(signals.every((s) => !s.aborted)).toBe(true);
+  view.unmount();
+  expect(signals.every((s) => s.aborted)).toBe(true);
+});
+
+it("a request that outlasts the timeout shows an error", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(
+      (_url: string, init?: RequestInit) =>
+        new Promise((_, reject) => {
+          if (init!.signal!.aborted) reject(init!.signal!.reason);
+          init!.signal!.addEventListener("abort", () => reject(init!.signal!.reason));
+        }),
+    ),
+  );
+  const timeout = vi.spyOn(AbortSignal, "timeout").mockImplementation(() => AbortSignal.abort(new DOMException("t", "TimeoutError")));
+  open();
+  expect((await screen.findAllByText(/timed out/)).length).toBeGreaterThan(0);
+  timeout.mockRestore();
+});
