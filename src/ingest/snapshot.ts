@@ -51,7 +51,9 @@ export async function buildSnapshot(
 
 export async function readSnapshot(path: string): Promise<Snapshot | null> {
   try {
-    return JSON.parse(await readFile(path, "utf8")) as Snapshot;
+    const snap = JSON.parse(await readFile(path, "utf8")) as Snapshot;
+    snap.recalls = snap.recalls.map((r) => (r.hazard ? r : withHazard(r)));
+    return snap;
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === "ENOENT") return null;
     throw e;

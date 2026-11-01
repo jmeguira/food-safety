@@ -1,3 +1,4 @@
+import { writeFile } from "node:fs/promises";
 import { mkdtempSync, readFileSync, readdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -46,6 +47,15 @@ describe("snapshot file", () => {
     await writeSnapshot(path, snap);
     expect(await readSnapshot(path)).toEqual(snap);
     expect(readdirSync(join(dir, "data"))).toEqual(["snapshot.json"]);
+  });
+});
+
+describe("snapshot file without hazards", () => {
+  it("gets each recall's hazard when read", async () => {
+    const path = join(mkdtempSync(join(tmpdir(), "snap-")), "s.json");
+    const recall = { id: "x", category: "food", reason: "Listeria monocytogenes contamination" };
+    await writeFile(path, JSON.stringify({ generatedAt: "2026-01-01T00:00:00Z", sources: {}, recalls: [recall] }));
+    expect((await readSnapshot(path))!.recalls[0].hazard).toBe("listeria");
   });
 });
 

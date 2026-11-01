@@ -96,7 +96,6 @@ Each feed item becomes a Recall with `classification` null, `status` `active` an
 | `category` | Product Type: Drugs is `drug`, Medical Devices `device`, anything else `food` (supplements, and types with no category of their own) |
 | `product`, `reason`, `firm` | Product Description, Reason for Announcement, Company Name |
 | `initiatedAt` | Company Announcement Date |
-| `hazard` | the [hazard](glossary.md#hazard) the reason names, set by `buildSnapshot`; see [Hazards](#hazards) | |
 | `distributionText` | the announcement's sentences that mention distribution, shipping, sale or states; the states come from `parseDistribution` over that text, so the firm's own address is not read as a destination |
 
 A page that fails to load or does not parse keeps its item: `product` and `reason` are the feed's title and description, `firm` is empty and `locationUnclear` is true. Only a feed that fails fails the source.
