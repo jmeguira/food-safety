@@ -37,3 +37,39 @@ export interface SourceMeta {
 }
 
 export type MetaResponse = Record<string, SourceMeta>;
+
+/** Query parameters of `GET /api/stats/timeseries`. Dates are YYYY-MM-DD and bound the date a recall began. */
+export interface TimeseriesQuery {
+  interval: "month" | "year";
+  category?: RecallCategory;
+  class?: SeverityClass;
+  state?: string;
+  from?: string;
+  to?: string;
+}
+
+export interface TimeseriesPeriod {
+  /** `YYYY-MM` or `YYYY`. */
+  period: string;
+  counts: ClassCounts;
+  total: number;
+}
+
+export interface TimeseriesResponse {
+  interval: "month" | "year";
+  /** Every period from the first to the last, zeros included. */
+  periods: TimeseriesPeriod[];
+  /** Each source's earliest date in the snapshot, whatever the filters. */
+  earliest: Record<string, string>;
+}
+
+/** Recalls per state over a date range by class, plus a `nationwide` key for those that list every state. */
+export type StatsStatesResponse = Record<string, ClassCounts>;
+
+export interface SummaryResponse {
+  active: ClassCounts;
+  /** Recalls that began this week (from Monday), this month and this year. */
+  began: { week: number; month: number; year: number };
+  /** Null when no recall has both a start and a classification date. */
+  medianDaysToClassification: number | null;
+}

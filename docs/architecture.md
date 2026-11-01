@@ -30,7 +30,8 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (snap
 1. `/api/health` and the routes in the table below.
 2. Any other `/api/*` returns 404 JSON, so an unknown API path never falls through to the [shell](glossary.md#shell).
 3. Static files from the web root.
-4. Any other path returns `index.html`, so client routes load directly.
+4. A path under `/assets/` or with a file extension that matched no file returns 404, so a stale script URL fails plainly instead of loading the page.
+5. Any other path returns `index.html`, so client routes load directly.
 
 ### API
 
@@ -42,9 +43,12 @@ Every route reads the snapshot the store holds at the moment of the request; non
 | `GET /api/recalls` | the Recalls matching every query parameter given: `status` (`active`, `closed`), `category`, `class` (`I`, `II`, `III`, `unclassified`), `state` (USPS code; matches recalls that name the state and nationwide ones) |
 | `GET /api/recalls/:id` | one Recall, or 404 |
 | `GET /api/states` | an object keyed by USPS code, each `{ active, mostSevere }`: the active recalls by class, and the most severe class present (null when none). It counts only recalls that name the state. Nationwide recalls, which list every state, are counted under the key `nationwide` instead, in the same shape, so the map decides how to combine them |
+| `GET /api/stats/timeseries` | `interval=month\|year` (required), optional `category`, `class`, `state`, `from`, `to` (YYYY-MM-DD). `{ interval, periods, earliest }`: a row `{ period, counts, total }` for every period from the first to the current one, zeros included, with counts by class; `earliest` is each source's first date in the snapshot, whatever the filters, since the sources' histories differ in length. A bad interval or date is a 400 |
+| `GET /api/stats/states` | optional `from`, `to`. Recalls that began in the range, by class, keyed by USPS code, with nationwide ones under `nationwide` and in no state's own counts |
+| `GET /api/stats/summary` | `{ active, began, medianDaysToClassification }`: active recalls by class; how many began this week (from Monday), month and year (UTC); the median days from a recall's start to its classification (null when none has both) |
 | `GET /api/meta` | each source's `{ refreshedAt, count, error }` |
 
-Before the first snapshot exists the routes answer as if it were empty. Routes are added to `apiRoutes` in `api.ts`.
+Before the first snapshot exists the routes answer as if it were empty. The stats endpoints count a recall at the date it began, `initiatedAt`, or its report date when that is missing; a recall with neither is left out. Their results are kept per snapshot and dropped with it on refresh. Routes are added to `apiRoutes` in `api.ts`.
 
 ### Refresh
 
