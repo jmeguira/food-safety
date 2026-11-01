@@ -2,7 +2,7 @@
 
 # food-safety
 
-A web app for seeing where FDA and USDA food [recalls](docs/glossary.md#recall) are active in the United States. It has a server with an API, a web shell with a Map page and a Dashboard page (the map shades each state by its most severe active recall begun in a chosen window, with filters, the nationwide recalls beside it and each source's freshness), and the [severity](docs/glossary.md#severity-class) palette. Recalls are ingested from openFDA into a snapshot the server serves through `/api/recalls`, `/api/states` and `/api/meta`. See [product](docs/product.md) for what it is for.
+A web app for seeing where FDA and USDA food [recalls](docs/glossary.md#recall) are active in the United States. It has a server with an API, a web shell with a Map page and a Dashboard page (the map shades each state by its most severe active recall begun in a chosen window, with filters, the nationwide recalls beside it and each source's freshness; choosing a state, or a list beside the map, lists its active recalls most severe first, and opening one shows everything the agency said with links to its notices), and the [severity](docs/glossary.md#severity-class) palette. Recalls are ingested from openFDA into a snapshot the server serves through `/api/recalls`, `/api/states` and `/api/meta`. See [product](docs/product.md) for what it is for.
 
 ## Requirements
 

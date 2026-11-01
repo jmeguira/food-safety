@@ -17,7 +17,7 @@ Anyone who wants to know what is being recalled near them, or how recalls have t
 
 ## Where it stands
 
-Done: the web shell with a Map page of states shaded by recall severity and a Dashboard page (a placeholder), the severity palette, and a server with a health check.
+Done: the web shell with a Map page of states shaded by recall severity and a Dashboard page (a placeholder), a state's recall list and a recall's detail with links to its sources, the severity palette, and a server with a health check.
 
 Not done: reading recalls from any [source](glossary.md#source), the dashboard charts. Those are what the product is for, not claims about the code.
 
