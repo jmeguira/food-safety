@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import type { MetaResponse, StatesQuery, StatesResponse } from "../../../shared/api";
-import type { RecallCategory } from "../../../shared/recall";
+import type { Recall, RecallCategory } from "../../../shared/recall";
 import type { SeverityClass } from "../../../shared/severity";
 import { STATES, TERRITORY_CODES } from "../../../shared/states";
 import { severity } from "../../severity";
 import { HEIGHT, WIDTH, shapes } from "./geometry";
+import { LISTS, RecallDetail, RecallList, getJson } from "./details";
 import { CLASS_ORDER, DEFAULT_WINDOW, WINDOWS, shownFor, sinceFor, type Shown, type WindowChoice } from "./model";
 
 const CATEGORIES: { value: RecallCategory; label: string }[] = [
@@ -16,12 +18,6 @@ const CATEGORIES: { value: RecallCategory; label: string }[] = [
 
 const UNSHADED = "#e5e7eb";
 const stateName = new Map(STATES.map((s) => [s.code, s.name]));
-
-const getJson = async <T,>(url: string): Promise<T> => {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${url} answered ${res.status}`);
-  return res.json() as Promise<T>;
-};
 
 const total = (s: Shown) => CLASS_ORDER.reduce((n, c) => n + s.counts[c], 0);
 
@@ -54,8 +50,12 @@ export default function MapPage() {
   const [meta, setMeta] = useState<MetaResponse | null>(null);
   const [metaFailed, setMetaFailed] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  /** Set by a click on a state; the recall list for it reads this and `window`. */
-  const [, setSelected] = useState<string | null>(null);
+  const [params, setParams] = useSearchParams();
+  const selected = params.get("state");
+  const listKind = LISTS.find((l) => l.value === params.get("list"))?.value ?? null;
+  const recallId = params.get("recall");
+  const [listed, setListed] = useState<{ key: string; recalls: Recall[] } | null>(null);
+  const [listError, setListError] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
 
@@ -80,6 +80,37 @@ export default function MapPage() {
   useEffect(() => {
     getJson<MetaResponse>("/api/meta").then(setMeta, () => setMetaFailed(true));
   }, []);
+
+  const choose = (next: Record<string, string>) => setParams(next);
+  const selectState = (code: string) => choose({ state: code });
+  const listQuery = (() => {
+    if (!selected && !listKind) return null;
+    const q = new URLSearchParams({ status: "active" });
+    const since = sinceFor(window);
+    if (since) q.set("since", since);
+    if (category !== "all") q.set("category", category);
+    if (selected) q.set("state", selected);
+    return `/api/recalls?${q}`;
+  })();
+  useEffect(() => {
+    if (!listQuery) return;
+    let current = true;
+    setListError(null);
+    getJson<Recall[]>(listQuery).then(
+      (r) => current && setListed({ key: listQuery, recalls: r }),
+      (e: Error) => current && setListError(e.message),
+    );
+    return () => {
+      current = false;
+    };
+  }, [listQuery]);
+  const listRecalls = listed && listed.key === listQuery ? listed.recalls : null;
+  const visible = listRecalls?.filter((r) =>
+    selected
+      ? (includeNationwide || !r.nationwide) && (cls === "all" || (r.classification ?? "unclassified") === cls)
+      : LISTS.find((l) => l.value === listKind)!.keeps(r),
+  );
+  const listTitle = selected ? (stateName.get(selected) ?? selected) : (LISTS.find((l) => l.value === listKind)?.label ?? "");
 
   const states = loaded?.states ?? null;
   const shown = (code: string) => shownFor(states?.[code], states?.nationwide, includeNationwide, cls);
@@ -139,6 +170,14 @@ export default function MapPage() {
         </label>
       </form>
 
+      {recallId && (
+        <RecallDetail
+          id={recallId}
+          meta={meta}
+          onClose={() => choose(selected ? { state: selected } : listKind ? { list: listKind } : {})}
+        />
+      )}
+
       {error && <p role="alert">Could not load recalls: {error}</p>}
       {!states && !error && <p>Loading…</p>}
 
@@ -159,8 +198,8 @@ export default function MapPage() {
                   tabIndex={0}
                   role="button"
                   aria-label={describe(name, s)}
-                  onClick={() => setSelected(code)}
-                  onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setSelected(code)}
+                  onClick={() => selectState(code)}
+                  onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && selectState(code)}
                   onMouseEnter={() => setHovered(code)}
                   onMouseLeave={() => setHovered(null)}
                   onFocus={() => setFocused(code)}
@@ -195,6 +234,34 @@ export default function MapPage() {
             <p>Active, in every state.</p>
             <ClassList shown={nationwide} />
           </section>
+
+          <section aria-label="Other lists">
+            <h2>Other lists</h2>
+            <ul>
+              {LISTS.map((l) => (
+                <li key={l.value}>
+                  <button type="button" onClick={() => choose({ list: l.value })}>
+                    {l.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {(selected || listKind) && windowLabel && (
+            <>
+              {listError && <p role="alert">Could not load recalls: {listError}</p>}
+              {!visible && !listError && <p>Loading…</p>}
+              {visible && !recallId && (
+                <RecallList
+                  title={listTitle}
+                  windowLabel={windowLabel}
+                  recalls={visible}
+                  onOpen={(id) => choose({ ...(selected ? { state: selected } : { list: listKind! }), recall: id })}
+                />
+              )}
+            </>
+          )}
         </>
       )}
 

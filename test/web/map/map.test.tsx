@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import type { MetaResponse, StateSummary, StatesResponse } from "../../../src/shared/api";
 import { severity } from "../../../src/web/severity";
+import { MemoryRouter } from "react-router-dom";
 import MapPage from "../../../src/web/pages/map";
 import { sinceFor } from "../../../src/web/pages/map/model";
 
@@ -52,7 +53,7 @@ afterEach(() => {
 const path = (code: string) => document.querySelector(`path[data-state="${code}"]`)!;
 const shade = (code: string) => path(code).getAttribute("data-severity");
 const open = async () => {
-  render(<MapPage />);
+  render(<MemoryRouter><MapPage /></MemoryRouter>);
   await waitFor(() => expect(path("CA")).toBeTruthy());
 };
 const openAll = async () => {
@@ -170,6 +171,6 @@ it("freshness: says so when the meta request fails", async () => {
   vi.mocked(fetch).mockImplementation(async (url) =>
     String(url).startsWith("/api/meta") ? new Response("", { status: 500 }) : new Response(JSON.stringify(full)),
   );
-  render(<MapPage />);
+  render(<MemoryRouter><MapPage /></MemoryRouter>);
   expect(await screen.findByText("Freshness unavailable.")).toBeTruthy();
 });
