@@ -1,4 +1,4 @@
-import type { Recall, RecallSource } from "../shared/recall.js";
+import type { RawRecall, Recall, RecallSource } from "../shared/recall.js";
 import { fetchAnnouncements, normalizeAnnouncement, type Announcement } from "./announcements.js";
 import { fetchEndpoint, normalizeReport, type Endpoint, type FetchFn, type OpenFdaReport } from "./openfda.js";
 
@@ -6,7 +6,7 @@ export interface Source {
   id: RecallSource;
   /** `previous` holds this source's records from the last snapshot. */
   fetch(fetchFn: FetchFn, previous: Recall[]): Promise<unknown[]>;
-  normalize(raw: unknown): Recall;
+  normalize(raw: unknown): RawRecall;
 }
 
 const openFda = (endpoint: Endpoint): Source => ({

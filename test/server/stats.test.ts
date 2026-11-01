@@ -190,3 +190,39 @@ describe("timeseries range", () => {
     expect(empty.body.periods).toEqual([]);
   });
 });
+
+describe("hazards", () => {
+  const rs = [
+    recall({ initiatedAt: "2026-01-05", category: "food", classification: "I", hazard: "listeria" }),
+    recall({ initiatedAt: "2026-02-05", category: "food", classification: "I", hazard: "listeria" }),
+    recall({ initiatedAt: "2026-02-06", category: "food", classification: null, hazard: "allergen" }),
+    recall({ initiatedAt: "2026-03-05", category: "drug", classification: "II", hazard: "cgmp" }),
+    recall({ initiatedAt: "2025-12-31", category: "food", classification: "III", hazard: "listeria" }),
+    recall({ initiatedAt: null, reportedAt: null, hazard: "other" }),
+  ];
+
+  it("counts recalls by hazard and class", async () => {
+    const { body } = await get(rs, "/api/stats/hazards");
+    expect(body).toEqual({
+      listeria: counts(2, 0, 1),
+      allergen: counts(0, 0, 0, 1),
+      cgmp: counts(0, 1),
+    });
+  });
+
+  it("filters by category and date range", async () => {
+    expect((await get(rs, "/api/stats/hazards?category=food")).body).toEqual({
+      listeria: counts(2, 0, 1),
+      allergen: counts(0, 0, 0, 1),
+    });
+    expect((await get(rs, "/api/stats/hazards?from=2026-02-01&to=2026-02-28")).body).toEqual({
+      listeria: counts(1),
+      allergen: counts(0, 0, 0, 1),
+    });
+  });
+
+  it("is empty with no snapshot and rejects a bad date", async () => {
+    expect((await get([], "/api/stats/hazards")).body).toEqual({});
+    expect((await get(rs, "/api/stats/hazards?from=yesterday")).status).toBe(400);
+  });
+});

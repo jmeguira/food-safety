@@ -1,4 +1,4 @@
-import type { Recall, RecallCategory } from "./recall.js";
+import type { Hazard, Recall, RecallCategory } from "./recall.js";
 import type { SeverityClass } from "./severity.js";
 
 export type { Health } from "./health.js";
@@ -73,3 +73,13 @@ export interface SummaryResponse {
   /** Null when no recall has both a start and a classification date. */
   medianDaysToClassification: number | null;
 }
+
+/** Query parameters of `GET /api/stats/hazards`. Dates are YYYY-MM-DD and bound the date a recall began. */
+export interface HazardsQuery {
+  category?: RecallCategory;
+  from?: string;
+  to?: string;
+}
+
+/** Recalls by hazard and class; a hazard with no recall in the range is absent. */
+export type StatsHazardsResponse = Partial<Record<Hazard, ClassCounts>>;

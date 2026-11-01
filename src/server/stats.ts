@@ -1,5 +1,6 @@
 import type {
   ClassCounts,
+  StatsHazardsResponse,
   StatsStatesResponse,
   SummaryResponse,
   TimeseriesResponse,
@@ -118,6 +119,20 @@ export function statesOverRange(
     const cls = classOf(r);
     if (r.nationwide) out.nationwide[cls]++;
     else for (const code of r.states) (out[code] ??= emptyCounts())[cls]++;
+  }
+  return out;
+}
+
+export function hazardsOverRange(
+  snapshot: Snapshot,
+  f: { category?: string; from?: string; to?: string },
+): StatsHazardsResponse {
+  const out: StatsHazardsResponse = {};
+  for (const r of snapshot.recalls) {
+    const d = countedAt(r);
+    if (!d || (f.from && d < f.from) || (f.to && d > f.to)) continue;
+    if (f.category && r.category !== f.category) continue;
+    (out[r.hazard] ??= emptyCounts())[classOf(r)]++;
   }
   return out;
 }

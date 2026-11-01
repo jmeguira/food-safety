@@ -3,7 +3,7 @@ import type { MetaResponse, RecallsResponse, StateSummary, StatesResponse } from
 import type { SeverityClass } from "../shared/severity.js";
 import { STATES } from "../shared/states.js";
 import type { Snapshot } from "../ingest/snapshot.js";
-import { statesOverRange, summary, timeseries } from "./stats.js";
+import { hazardsOverRange, statesOverRange, summary, timeseries } from "./stats.js";
 
 const CLASSES: SeverityClass[] = ["I", "II", "III", "unclassified"];
 
@@ -112,6 +112,17 @@ export function apiRoutes(
     return c.json(
       memo(snapshot(), JSON.stringify(["st", from, to]), () =>
         statesOverRange(snapshot(), from, to),
+      ),
+    );
+  });
+
+  api.get("/stats/hazards", (c) => {
+    const { category, from, to } = c.req.query();
+    const bad = badDate({ from, to });
+    if (bad) return c.json({ error: `${bad} must be YYYY-MM-DD` }, 400);
+    return c.json(
+      memo(snapshot(), JSON.stringify(["hz", category, from, to]), () =>
+        hazardsOverRange(snapshot(), { category, from, to }),
       ),
     );
   });

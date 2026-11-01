@@ -1,0 +1,716 @@
+[
+  {
+    "id": "openfda-device:Z-0189-2019",
+    "category": "device",
+    "reason": "Atellica Solution system software (SW) version 1.13 and lower, five (5) behavioral issues were identified: 1. Reagent Lock may not work as intended with Primary Reagent ReadyPacks¿ and Ancillary Packs when more than one (1) lot of specific Reagent kits are loaded on the analyzer at the same time. 2. Sample barcodes may be incorrectly read 3. The Atellica IM 1300 Analyzer and Atellica IM 1600 Analy",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-0190-2026",
+    "category": "device",
+    "reason": "IV sets may leak.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-0284-2013",
+    "category": "device",
+    "reason": "Terumo Cardiovascular Systems (Terumo CVS) has received multiple reports since 2007 of various malfunctions of the arterial and cardioplegia monitors for the Sarns Modular Perfusion System 8000. The malfunctions can be broadly categorized as follows monitor power malfunctions, inability to measure pressure and inaccurate and/or false pressure alarms. If the malfunction of the arterial or cardio",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-0406-2017",
+    "category": "device",
+    "reason": "Labeling: Statement was added to the Warnings/Precautions section requesting end users to consider the presence of a knot if significant resistance is encountered during attempts at removal.",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-device:Z-0519-2017",
+    "category": "device",
+    "reason": "ICU Medical Inc. has identified a potential for leak with certain SafeSet Reservoir and blood sampling kits containing the Transpac IV transducers.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-0732-2025",
+    "category": "device",
+    "reason": "Inflation Device used during cardiovascular procedures may leak in the indeflator at the hose rotating luer or at the gauge, which could lead to air embolism.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-0962-2026",
+    "category": "device",
+    "reason": "Automated Dispensing Cabinets (ADC) received a Half Height CUBIE drawer firmware update, which caused a Cubie Insert event which prompts software to generate a duplicate address, which causes an error and the drawer to fail, which may lead to inability or delay in accessing stored items, delay in the replenishment of ADCs or patient specific medications stored outside of ADCs.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-1353-2016",
+    "category": "device",
+    "reason": "The firm was notified of a software error in which the system may not automatically send all image/data series to remote devices.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-1926-2018",
+    "category": "device",
+    "reason": "Baxter Healthcare will be installing new firmware on all Prismaflex control units to address the potential for a small number of these units to exhibit a failure mode with the pump module electronics. The failure mode may result in a Voltage Out of Range malfunction alarm, which causes the device to enter a safe state and become inoperable until it is serviced. Baxter will be releasing new firmwar",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-2120-2012",
+    "category": "device",
+    "reason": "Exactech, Inc. initiated a recall of Equinoxe Replicator Plates, Equinoxe Locking Screws, Equinoxe Compression Screw Kits, Equinoxe Fracture Adapter Tray Screws, and Octane-C Intervertebral fusion devices due to the firm determining that the device labeling identifies the affected parts as having a ten year shelf life; however, the packaging configuration that was used it qualified to a five year",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-device:Z-2404-2024",
+    "category": "device",
+    "reason": "Potential for the backcheck valve to malfunction, resulting in backflow of medication from secondary (piggyback) IV containers into primary IV containers and the inability to prime, resulting in patient injuries of adverse drug reaction and/or product malfunction with loss of medication/blood.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-2437-2021",
+    "category": "device",
+    "reason": "Specific serial numbers of the Solero MTA Generator require servicing to upgrade the software to help reduce the incidence of Error 0001, which can occur during system start-up.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-2538-2015",
+    "category": "device",
+    "reason": "Jackscrew nut part failure potentially leading to device malfunction and patient/operator injury.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-2598-2017",
+    "category": "device",
+    "reason": "Zimmer Biomet is initiating a field action for sterile-packaged implants packaged in a single package configuration due to packaging design verification test failures.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-2659-2018",
+    "category": "device",
+    "reason": "Recall is due to a design weakness of the power insert module.",
+    "hazard": "device-defect"
+  },
+  {
+    "id": "openfda-device:Z-3055-2020",
+    "category": "device",
+    "reason": "Labeling discrepancy for the Rated Burst Pressure (RBP) value.",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-drug:D-0080-2021",
+    "category": "drug",
+    "reason": "CGMP Deviations: Next Advanced Antibacterial Hand Sanitizer was found to be below the label claim for ethanol content and contained methanol. Other products were recalled because they were manufactured in the same facility as the product found to contain methanol.",
+    "hazard": "cgmp"
+  },
+  {
+    "id": "openfda-drug:D-0115-2026",
+    "category": "drug",
+    "reason": "Lack of Assurance of Sterility",
+    "hazard": "sterility"
+  },
+  {
+    "id": "openfda-drug:D-0120-2025",
+    "category": "drug",
+    "reason": "Superpotent Drug and Subpotent Drug: potency failures obtained",
+    "hazard": "potency"
+  },
+  {
+    "id": "openfda-drug:D-0179-2024",
+    "category": "drug",
+    "reason": "CGMP Deviations: Products were exposed to temperatures outside of the products labeled storage conditions.",
+    "hazard": "cgmp"
+  },
+  {
+    "id": "openfda-drug:D-0194-2019",
+    "category": "drug",
+    "reason": "Lack of Assurance of Sterility",
+    "hazard": "sterility"
+  },
+  {
+    "id": "openfda-drug:D-0276-2024",
+    "category": "drug",
+    "reason": "Failed Dissolution Specifications",
+    "hazard": "potency"
+  },
+  {
+    "id": "openfda-drug:D-0335-2019",
+    "category": "drug",
+    "reason": "Superpotent Drug: recalled lots may have higher concentration of ibuprofen.",
+    "hazard": "potency"
+  },
+  {
+    "id": "openfda-drug:D-036-2013",
+    "category": "drug",
+    "reason": "Presence of Particulate Matter: visible crystalline particulates and the discovery of crystalline particulate in a retain sample.",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-drug:D-0429-2021",
+    "category": "drug",
+    "reason": "CGMP Deviations: Intermittent exposure to temperature excursion during storage.",
+    "hazard": "cgmp"
+  },
+  {
+    "id": "openfda-drug:D-0536-2025",
+    "category": "drug",
+    "reason": "Sub-Potent Drug: Subpotent assay results during stability testing.",
+    "hazard": "potency"
+  },
+  {
+    "id": "openfda-drug:D-0572-2024",
+    "category": "drug",
+    "reason": "CGMP deviations",
+    "hazard": "cgmp"
+  },
+  {
+    "id": "openfda-drug:D-0580-2019",
+    "category": "drug",
+    "reason": "Microbial contamination",
+    "hazard": "other"
+  },
+  {
+    "id": "openfda-drug:D-0623-2022",
+    "category": "drug",
+    "reason": "CGMP Deviations: Products were manufactured with contaminated excipient that was recalled from the excipient supplier.",
+    "hazard": "cgmp"
+  },
+  {
+    "id": "openfda-drug:D-0669-2016",
+    "category": "drug",
+    "reason": "Superpotent Drug: The vitamin supplement contains an extremely high level of vitamin D3 (Cholecalciferol).",
+    "hazard": "potency"
+  },
+  {
+    "id": "openfda-drug:D-0840-2016",
+    "category": "drug",
+    "reason": "Failed Dissolution Specifications; three month stability time point.",
+    "hazard": "potency"
+  },
+  {
+    "id": "openfda-drug:D-0982-2017",
+    "category": "drug",
+    "reason": "Failed Dissolution Specifications: Low dissolution results were obtained during stability testing",
+    "hazard": "potency"
+  },
+  {
+    "id": "openfda-drug:D-1334-2022",
+    "category": "drug",
+    "reason": "Subpotent Drug - Out of specification (OOS) result obtained during monitoring stability study for Assay. Results below specification.",
+    "hazard": "potency"
+  },
+  {
+    "id": "openfda-drug:D-1395-2012",
+    "category": "drug",
+    "reason": "Subpotent (Single Ingredient Drug): Low assay at the 6-month test interval.",
+    "hazard": "potency"
+  },
+  {
+    "id": "openfda-drug:D-1398-2016",
+    "category": "drug",
+    "reason": "Presence of Particulate Matter: API contaminated with glass particulate was used to produce sterile injectable drugs.",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-drug:D-1503-2019",
+    "category": "drug",
+    "reason": "CGMP Deviations: products were manufactured with lack of process validation, cleaning validation, stability studies, and other current good manufacturing practice violations.",
+    "hazard": "cgmp"
+  },
+  {
+    "id": "openfda-drug:D-1519-2015",
+    "category": "drug",
+    "reason": "Lack of Assurance of Sterility; FDA inspection identified GMP violations potentially impacting product quality and sterility",
+    "hazard": "sterility"
+  },
+  {
+    "id": "openfda-drug:D-321-2016",
+    "category": "drug",
+    "reason": "Lack of Assurance of Sterility: A recall of all compounded sterile preparations within expiry is being initiated due to observations associated with poor sterile production practices resulting in a lack of sterility assurance for their finished drugs.",
+    "hazard": "sterility"
+  },
+  {
+    "id": "openfda-drug:D-518-2014",
+    "category": "drug",
+    "reason": "Labeling: Label Mixup; FAMOTIDINE Tablet, 20 mg may be potentially mislabeled as CARVEDILOL PHOSPHATE ER, Capsule, 20 mg, NDC 00007337113, Pedigree: W003225, EXP: 6/17/2014; DULoxetine HCl DR, Capsule, 20 mg, NDC 00002323560, Pedigree: W003506, EXP: 6/21/2014; FAMOTIDINE, Tablet, 20 mg, NDC 16714036104, Pedigree: W003507, EXP: 6/21/2014; MYCOPHENOLATE MOFETIL, Capsule, 250 mg, NDC 0037822500",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-drug:D-851-2013",
+    "category": "drug",
+    "reason": "Presence of Particulate; lot being recalled as a precaution due to the discovery of 2 particles found in a lot which preceded the recalled lot",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-0001-2015",
+    "category": "food",
+    "reason": "Undeclared egg allergen",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0020-2015",
+    "category": "food",
+    "reason": "Firm was notified by supplier that specific lots of \"expo fresh\" Roma tomatoes may be contaminated with Salmonella.",
+    "hazard": "salmonella"
+  },
+  {
+    "id": "openfda-food:F-0091-2013",
+    "category": "food",
+    "reason": "G.O. Fresh in Minnesota is voluntarily recalling specific cut items that contain cantaloupe, which has been recalled by DFI Marketing, Inc. due to potential Salmonella contamination.",
+    "hazard": "salmonella"
+  },
+  {
+    "id": "openfda-food:F-0136-2017",
+    "category": "food",
+    "reason": "Product was manufactured with flour recalled due to E. coli O121 contamination.",
+    "hazard": "e-coli"
+  },
+  {
+    "id": "openfda-food:F-0143-2018",
+    "category": "food",
+    "reason": "Midway Specialty Vehicles, LLC dba Aunt Beths Cookies, is voluntarily recalling multiple varieties of cookies sold between January 1, 2017 and September 28, 2017, because they may contain traces of undeclared peanut or tree-nut allergens.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0263-2023",
+    "category": "food",
+    "reason": "Due to presence of mold (Aspergillus brasiliensis) and Ochratoxin A.",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:F-0327-2022",
+    "category": "food",
+    "reason": "potential for glass and metal in product",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-0369-2017",
+    "category": "food",
+    "reason": "The product contains undeclared sulfites based on sampling and analysis by New York State Department of Agriculture and Markets and private laboratory testing.",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-food:F-0379-2016",
+    "category": "food",
+    "reason": "All cans and pouches of Skipanon Brand seafood, including salmon products are being recalled due to lack of documentation and possible under-processed product. Under-processed seafood could lead to contamination with Clostridium botulinum.",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:F-0412-2019",
+    "category": "food",
+    "reason": "Routine quality testing identified elevated levels of lead above applicable 2232 levels, which may pose potential health risks to a portion of the population.",
+    "hazard": "chemical"
+  },
+  {
+    "id": "openfda-food:F-0472-2021",
+    "category": "food",
+    "reason": "Fish decomposition and histamines",
+    "hazard": "other"
+  },
+  {
+    "id": "openfda-food:F-0521-2021",
+    "category": "food",
+    "reason": "Foreign material",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-0533-2016",
+    "category": "food",
+    "reason": "Product contains undeclared soy and wheat.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0559-2020",
+    "category": "food",
+    "reason": "The product contains undeclared sulfites.",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-food:F-0587-2016",
+    "category": "food",
+    "reason": "Kwik Trip, Inc. is recalling various bakery goods which might be contaminated with pieces of plastic due to using plastic contaminated ice nuggets as an ingredient.",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-0609-2015",
+    "category": "food",
+    "reason": "Virginia State (VDACS) found Listeria monocytogenes in Lacteos Santa Martha Quesito Casero Fresh Curd (Best by 9/27/14), FDA made an inspection, were the environmental samples collected came up positive also for Listeria monocytogenes, also the Oasis Brands Inc. sent finish products samples to a private lab, the Lacteos Santa Martha Cuajada en Hoja Queso Casero Hecho a Mano Fresh Curd (Best By dat",
+    "hazard": "listeria"
+  },
+  {
+    "id": "openfda-food:F-0616-2018",
+    "category": "food",
+    "reason": "Nyblad Orchards Inc. initiated a voluntary recall of multiple varieties of whole fresh apples due to potential contamination with Listeria monocytogenes.",
+    "hazard": "listeria"
+  },
+  {
+    "id": "openfda-food:F-0630-2022",
+    "category": "food",
+    "reason": "Product showed suspected mold growth prior to expiration date.",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:F-0634-2021",
+    "category": "food",
+    "reason": "Possible metal fragments in Yogurt Bars",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-0655-2013",
+    "category": "food",
+    "reason": "Undeclared allergens: wheat, soy, crustacean shellfish (crab), and yellow #5",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0665-2023",
+    "category": "food",
+    "reason": "Stir-Fried Kimchi was recalled due to undeclared Fish (Anchovy), Shrimp, Wheat, and Sesame Oil.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0675-2023",
+    "category": "food",
+    "reason": "Seasoned Dried Pollack was recalled due to undeclared Fish (Pollack), Wheat, Soybean.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0678-2024",
+    "category": "food",
+    "reason": "Potential Salmonella Contamination",
+    "hazard": "salmonella"
+  },
+  {
+    "id": "openfda-food:F-0738-2020",
+    "category": "food",
+    "reason": "Undeclared wheat and soybean oil.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0757-2022",
+    "category": "food",
+    "reason": "Harvest equipment used in harvesting raw iceberg lettuce was tested by Dole and found to contain Listeria monocytogenes.",
+    "hazard": "listeria"
+  },
+  {
+    "id": "openfda-food:F-0777-2015",
+    "category": "food",
+    "reason": "Possible contamination with Listeria monocytogenes.",
+    "hazard": "listeria"
+  },
+  {
+    "id": "openfda-food:F-0792-2016",
+    "category": "food",
+    "reason": "Nestle is recalling a limited number of DiGiorno, Lean Cuisine, and Stouffer's products due to the potential presence of glass pieces.",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-0801-2025",
+    "category": "food",
+    "reason": "Contains undeclared almonds & undeclared sesame",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0848-2024",
+    "category": "food",
+    "reason": "The food was not held at an appropriate temperature. The holding temperature could affect spoilage and potentially support pathogen growth.",
+    "hazard": "other"
+  },
+  {
+    "id": "openfda-food:F-0857-2016",
+    "category": "food",
+    "reason": "May contain small metal fragments from wire mesh sifter.",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-0857-2020",
+    "category": "food",
+    "reason": "The product was found to be adulterated with Norovirus.",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:F-0865-2017",
+    "category": "food",
+    "reason": "Mooncake products, manufactured and distributed by Magic Gourmet Trading, Inc. of Milbrae, CA did not have adequate product labeling, including ingredient statements and allergen declaration. Undeclared ingredients include wheat, peanut oil.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0921-2020",
+    "category": "food",
+    "reason": "Product contains dried peaches, but front labeling of product stated dried plums",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-food:F-0969-2013",
+    "category": "food",
+    "reason": "The firm received two consumer complaints regarding chemical smell/taste and tasting like the can. As a result the firm began extensive testing of its inventory. Preliminary testing identified a contaminant was present. Further testing is pending to specifically identify the contaminant.",
+    "hazard": "chemical"
+  },
+  {
+    "id": "openfda-food:F-0984-2018",
+    "category": "food",
+    "reason": "Gourmet Cream Cheese Cinnamon Roll is recalled due to undeclared egg.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-0984-2023",
+    "category": "food",
+    "reason": "Potential contamination with Hepatitis A.",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:F-1050-2016",
+    "category": "food",
+    "reason": "The supplier of the salad oil used in the above product(s) has voluntarily recalled this raw material due to the potential presence of foreign material. Winter Gardens is continuing this voluntary recall through the supply chain.",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-1052-2020",
+    "category": "food",
+    "reason": "Ready to Eat salad products containing iceberg lettuce, red cabbage and/or carrot ingredients are recalled due to a possible health risk from Cyclospora.",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:F-1067-2022",
+    "category": "food",
+    "reason": "California Department of Pesticide Regulation detected the presence of Formetante HCI. This pesticide has a non-tolerance for blackberries.",
+    "hazard": "chemical"
+  },
+  {
+    "id": "openfda-food:F-1110-2018",
+    "category": "food",
+    "reason": "Kwik Trip is recalling Kitchen's Cravings Premium Egg Salad Sandwich on Oat Multigrain Bread because it may contain undeclared fish and shellfish.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-1215-2019",
+    "category": "food",
+    "reason": "Product contains undeclared sulfites.",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-food:F-1233-2022",
+    "category": "food",
+    "reason": "Potential contamination with Salmonella",
+    "hazard": "salmonella"
+  },
+  {
+    "id": "openfda-food:F-1265-2014",
+    "category": "food",
+    "reason": "The dietary supplements have the potential to be contaminated with undeclared steroids, pharmaceutical ingredients and/or chemical additives due to lack of GMPs.",
+    "hazard": "chemical"
+  },
+  {
+    "id": "openfda-food:F-1267-2019",
+    "category": "food",
+    "reason": "Corn flour which may contain small pieces of plastic.",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-1308-2015",
+    "category": "food",
+    "reason": "Product may contain undeclared peanut protein.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-1328-2018",
+    "category": "food",
+    "reason": "Shipping container from CA to HI was not held at proper temperature which could cause food items to be contaminated with spoilage organisms or pathogens",
+    "hazard": "other"
+  },
+  {
+    "id": "openfda-food:F-1447-2014",
+    "category": "food",
+    "reason": "CA Dept of Pesticide Regulation, Enforcement Branch, sampled Mexpogroup Cactus and found the following chemical which do not have a tolerance level in the US: Monocrotophos - 2.37 ppm; Carbendazim as Thiophanate Methyl - 0.154 ppm; Chlorothalonil - 3.61 ppm.",
+    "hazard": "chemical"
+  },
+  {
+    "id": "openfda-food:F-1455-2012",
+    "category": "food",
+    "reason": "Inspectional evidence and sample analyses as well as reports of food borne illness outbreaks due to norovirus have led FDA to believe that Korean molluscan shellfish and products containing KMS as ingredients are adulterated under Section 40(a)(4) in that they were prepared and held under insanitary conditions, whereby they may have become contaminated with filth or whereby they may have been rend",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:F-1540-2017",
+    "category": "food",
+    "reason": "Potential Listeria monocytogenes contamination.",
+    "hazard": "listeria"
+  },
+  {
+    "id": "openfda-food:F-1563-2023",
+    "category": "food",
+    "reason": "Foreign material: pieces of a pen (writing utensil).",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-1634-2022",
+    "category": "food",
+    "reason": "Findings and potential for Cronobacter sakazakii and Clostridium botulinum.",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:F-1643-2017",
+    "category": "food",
+    "reason": "Manzana Products Co. is initiating a recall of three varieties of apple sauce after receiving customer complaints or finding small pieces of glass in the product.",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-1671-2024",
+    "category": "food",
+    "reason": "Potential salmonella contamination",
+    "hazard": "salmonella"
+  },
+  {
+    "id": "openfda-food:F-1725-2017",
+    "category": "food",
+    "reason": "The dietary supplement contains lead.",
+    "hazard": "chemical"
+  },
+  {
+    "id": "openfda-food:F-1727-2019",
+    "category": "food",
+    "reason": "Products were not held at an appropriate temperature due to a mechanical malfunction during transportation.",
+    "hazard": "other"
+  },
+  {
+    "id": "openfda-food:F-1745-2017",
+    "category": "food",
+    "reason": "Multiple laboratory analysis found multiple instances where various cheeses exceed allowed limits of generic E. coli.",
+    "hazard": "e-coli"
+  },
+  {
+    "id": "openfda-food:F-1745-2024",
+    "category": "food",
+    "reason": "Product contains elevated levels of lead (2,040ppb).",
+    "hazard": "chemical"
+  },
+  {
+    "id": "openfda-food:F-1759-2018",
+    "category": "food",
+    "reason": "Grizzlies Brand and Grizzlies Granolas Oregon Trail Mix are recalled due to undeclared milk.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-1787-2013",
+    "category": "food",
+    "reason": "Golden Beach Inc. is recalling Sunny Sea Sardines in Tomato Sauce for decomposition.",
+    "hazard": "other"
+  },
+  {
+    "id": "openfda-food:F-1796-2013",
+    "category": "food",
+    "reason": "A recall was initiated as a result of an undeclared sugar ingredient in the labeling used for Jennies' Dutch Chocolate Macaroons.",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-food:F-1922-2012",
+    "category": "food",
+    "reason": "FreshPoint South Florida is recalling sliced fresh yellow onions and salsa products processed using yellow onions sourced from Gills Onions, LLC which were recalled for Listeria monocytogenes.",
+    "hazard": "listeria"
+  },
+  {
+    "id": "openfda-food:F-1994-2017",
+    "category": "food",
+    "reason": "Product may contain foreign objects: rocks and metal fragments.",
+    "hazard": "foreign-material"
+  },
+  {
+    "id": "openfda-food:F-2075-2019",
+    "category": "food",
+    "reason": "Possible Hepatitis A contamination.",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:F-2258-2019",
+    "category": "food",
+    "reason": "Fudge Brownie Cookie product is recalled due to undeclared soy lecithin.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-2387-2014",
+    "category": "food",
+    "reason": "Candy was made using carob powder that is currently under recall by the direct supplier due to potential Salmonella contamination.",
+    "hazard": "salmonella"
+  },
+  {
+    "id": "openfda-food:F-2745-2015",
+    "category": "food",
+    "reason": "Undeclared allergen: Bread products were manufactured using raw material (wheat gluten) that was recalled due to undeclared peanut and/or tree nut residue.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-2992-2017",
+    "category": "food",
+    "reason": "Product may contain undeclared milk.",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:F-3091-2015",
+    "category": "food",
+    "reason": "Potential for adulteration - elevated mold, yeast, and coliform counts",
+    "hazard": "other-pathogen"
+  },
+  {
+    "id": "openfda-food:H-0076-2025",
+    "category": "food",
+    "reason": "Undeclared wheat allergens",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:H-0193-2026",
+    "category": "food",
+    "reason": "Raw milk Whatcom Blue cheese is recalled due to E. coli O103:H2.",
+    "hazard": "e-coli"
+  },
+  {
+    "id": "openfda-food:H-0255-2025",
+    "category": "food",
+    "reason": "Undeclared wheat",
+    "hazard": "allergen"
+  },
+  {
+    "id": "openfda-food:H-0389-2026",
+    "category": "food",
+    "reason": "Product tested high for lead.",
+    "hazard": "chemical"
+  },
+  {
+    "id": "openfda-food:H-0914-2026",
+    "category": "food",
+    "reason": "Sesame Seeds White were labeled as Curry Powder Sweet.",
+    "hazard": "labeling"
+  },
+  {
+    "id": "openfda-food:H-1339-2026",
+    "category": "food",
+    "reason": "Sprouts may be contaminated with STEC E. coli and/or Salmonella.",
+    "hazard": "salmonella"
+  },
+  {
+    "id": "openfda-food:F-2153-2016",
+    "category": "food",
+    "reason": "Woodstock Farms informed HMSHost of their recall. HMSHost purchase bulk snacks from Woodstock Farms , has discovered during their routine testing that the walnuts used in the recalled items/products may have the presence of Listeria Monocytogenes. HMSHost repackaged the bulk snack under several private label brands to sell to the consumer. HMSHost is initiating a precautionary voluntary recall.",
+    "hazard": "listeria"
+  },
+  {
+    "id": "openfda-food:F-1836-2016",
+    "category": "food",
+    "reason": "Giant Eagle supplier SunOpta has informed Giant Eagle of the expansion of their sunflower kernel recall due to possible Listeria monocytogenes contamination. Giant Eagle repacked the sunflower kernels under the Market District label, which were sold in the bulk section of 12 of its Market District stores. Giant Eagle has expanded their recall to include all lots of sunflower seeds",
+    "hazard": "listeria"
+  },
+  {
+    "id": "openfda-device:Z-3057-2026",
+    "category": "device",
+    "reason": "The kits contain BD ChloraPrep Clear - 1 mL and FREPP Clear 1.5 mL Applicators which have a potential breach of sterility in the packaging, due to wrinkles in the paper lidding which may extend to the seal area. If the sterile barrier is compromised, patients and users may be exposed to microbial contamination. Potential health consequences may include no injury, localized infection, or, less comm",
+    "hazard": "sterility"
+  },
+  {
+    "id": "openfda-device:Z-3151-2024",
+    "category": "device",
+    "reason": "There is the potential for holes in the clear sterile barrier of the device pouch which may impact device sterility.",
+    "hazard": "sterility"
+  },
+  {
+    "id": "openfda-device:Z-0637-2021",
+    "category": "device",
+    "reason": "This is a follow-up to the EKOS Field Safety Notice dated April 30, 2019. The Radio Frequency (RF) board has been redesigned to prevent occasional internal board failures at lower temperatures. All EKOS CU 4.0 consoles containing the old RF board design will be replaced with the newly designed CU 4.0 consoles.",
+    "hazard": "device-defect"
+  }
+]

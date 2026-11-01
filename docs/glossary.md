@@ -34,3 +34,6 @@ The free text in a recall that says where the product went, such as "CA, NV, and
 
 ### nationwide
 A distribution pattern that says the product went everywhere in the US ("nationwide", "nationally", "all 50 states") or worldwide. A nationwide recall reaches every state and DC.
+
+### hazard
+The cause a recall's reason names, such as `listeria`, `allergen` or `cgmp`, or `other` when it names none of the known ones. The Recall's `hazard`, read from its reason by `hazardOf`. See [architecture](architecture.md#hazards).
