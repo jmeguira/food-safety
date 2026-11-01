@@ -15,12 +15,12 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (snap
 | Part | Where | Responsibility |
 |---|---|---|
 | Server | `src/server/` | `createApp(webRoot, current)` in `app.ts` builds the Hono app; `api.ts` holds the API routes; `store.ts` holds the [snapshot](glossary.md#snapshot) in memory and refreshes it; `main.ts` starts it on `PORT` (default 3000), serving `dist/web` |
-| Web | `src/web/` | React app routed with react-router: `/` is the Map page, `/dashboard` the Dashboard; both are placeholders |
+| Web | `src/web/` | React app routed with react-router: `/` is the Map page (a placeholder), `/dashboard` the [Dashboard](#dashboard) |
 | Severity | `src/shared/severity.ts`, `src/web/severity.ts` | the [severity class](glossary.md#severity-class) type, and its label, color and meaning for display |
 | Shared | `src/shared/` | types used by both server and web; `api.ts` holds the request and response types of the API |
 | States | `src/shared/states.ts` | the 50 states, DC and the territories, each with USPS code, name and FIPS code; records carry USPS codes, the map joins on FIPS |
 | Recall | `src/shared/recall.ts` | the `Recall` model every [source](glossary.md#source) normalizes to |
-| Ingest | `src/ingest/` | `distribution.ts` turns a [distribution pattern](glossary.md#distribution-pattern) into states; `openfda.ts` fetches and normalizes openFDA; `announcements.ts` fetches and normalizes FDA [announcements](glossary.md#announcement); `sources.ts` lists the sources; `match.ts` merges announcements into their enforcement reports; `snapshot.ts` builds and writes the [snapshot](glossary.md#snapshot); `main.ts` is `npm run ingest` |
+| Ingest | `src/ingest/` | `distribution.ts` turns a [distribution pattern](glossary.md#distribution-pattern) into states; `openfda.ts` fetches and normalizes openFDA; `announcements.ts` fetches and normalizes FDA [announcements](glossary.md#announcement); `sources.ts` lists the sources; `match.ts` merges announcements into their enforcement reports; `hazard.ts` reads a reason's [hazard](glossary.md#hazard); `snapshot.ts` builds and writes the [snapshot](glossary.md#snapshot); `main.ts` is `npm run ingest` |
 | Tests | `test/` | vitest; `test/fixtures/distribution.json` holds real distribution patterns from openFDA food, drug and device enforcement reports, each with its expected result |
 
 ## Server
@@ -30,7 +30,8 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (snap
 1. `/api/health` and the routes in the table below.
 2. Any other `/api/*` returns 404 JSON, so an unknown API path never falls through to the [shell](glossary.md#shell).
 3. Static files from the web root.
-4. Any other path returns `index.html`, so client routes load directly.
+4. A path under `/assets/` or with a file extension that matched no file returns 404, so a stale script URL fails plainly instead of loading the page.
+5. Any other path returns `index.html`, so client routes load directly.
 
 ### API
 
@@ -42,9 +43,13 @@ Every route reads the snapshot the store holds at the moment of the request; non
 | `GET /api/recalls` | the Recalls matching every query parameter given: `status` (`active`, `closed`), `category`, `class` (`I`, `II`, `III`, `unclassified`), `state` (USPS code; matches recalls that name the state and nationwide ones) |
 | `GET /api/recalls/:id` | one Recall, or 404 |
 | `GET /api/states` | an object keyed by USPS code, each `{ active, mostSevere }`: the active recalls by class, and the most severe class present (null when none). It counts only recalls that name the state. Nationwide recalls, which list every state, are counted under the key `nationwide` instead, in the same shape, so the map decides how to combine them |
+| `GET /api/stats/timeseries` | `interval=month\|year` (required), optional `category`, `class`, `state`, `from`, `to` (YYYY-MM-DD). `{ interval, periods, earliest }`: a row `{ period, counts, total }` for every period from the first to the current one, zeros included, with counts by class; `earliest` is each source's first date in the snapshot, whatever the filters, since the sources' histories differ in length. A bad interval or date is a 400 |
+| `GET /api/stats/states` | optional `from`, `to`. Recalls that began in the range, by class, keyed by USPS code, with nationwide ones under `nationwide` and in no state's own counts |
+| `GET /api/stats/hazards` | optional `category`, `from`, `to`. Recalls that began in the range, keyed by [hazard](glossary.md#hazard), each with counts by class; a hazard with no recall is absent. A bad date is a 400 |
+| `GET /api/stats/summary` | `{ active, began, medianDaysToClassification }`: active recalls by class; how many began this week (from Monday), month and year (UTC); the median days from a recall's start to its classification (null when none has both) |
 | `GET /api/meta` | each source's `{ refreshedAt, count, error }` |
 
-Before the first snapshot exists the routes answer as if it were empty. Routes are added to `apiRoutes` in `api.ts`.
+Before the first snapshot exists the routes answer as if it were empty. The stats endpoints count a recall at the date it began, `initiatedAt`, or its report date when that is missing; a recall with neither is left out. Their results are kept per snapshot and dropped with it on refresh. Routes are added to `apiRoutes` in `api.ts`.
 
 ### Refresh
 
@@ -113,6 +118,26 @@ A matched pair becomes the enforcement Recall, with the announcement's link appe
 
 `test/fixtures/match.json` holds recorded pairs that match and near misses that do not (outside the window, or firms that differ), each naming the announcement's URL and the report's recall number.
 
+### Hazards
+
+`buildSnapshot` gives every Recall a `hazard` after the sources are merged, from `hazardOf(reason, category)` in `src/ingest/hazard.ts`, so a source never sets it and a new source gets it. A source's `normalize` returns a `RawRecall`, a Recall before its hazard. The reason is lower-cased and tried against these in order; the first match wins, so a reason that names Listeria and a labeling error is `listeria`.
+
+| Hazard | The reason names |
+|---|---|
+| `listeria`, `salmonella`, `e-coli` | the organism |
+| `other-pathogen` | botulism, hepatitis A, cyclospora, norovirus, mold and a few other named organisms |
+| `allergen` | an allergen, or an undeclared/unlisted milk, egg, peanut, tree nut, wheat, soy, fish, shellfish or sesame |
+| `foreign-material` | foreign material, glass, metal pieces, plastic, particulate |
+| `chemical` | lead, a pesticide, a toxin or a chemical |
+| `sterility` | sterility, or a non-sterile product |
+| `potency` | subpotent, superpotent, potency or dissolution |
+| `cgmp` | good manufacturing practice |
+| `device-defect` | for a device only: malfunction, software, firmware, design, defect, leak |
+| `labeling` | mislabeling, a label, a warning or an undeclared ingredient |
+| `other` | none of the above; a reason is never guessed into a hazard |
+
+For a device, `device-defect` is tried just ahead of `labeling`. "Lead" as a verb ("could lead to") is not the metal. `test/fixtures/hazards.json` holds recorded reasons, each with its recall's `id` and expected hazard.
+
 ### Recall model
 
 Defined in `src/shared/recall.ts`; the rest of the code never reads a source's own field names.
@@ -144,6 +169,19 @@ Defined in `src/shared/recall.ts`; the rest of the code never reads a source's o
 ```
 
 When a source fails, its records from the previous snapshot are kept as they were, `refreshedAt` stays at its last success (null if there was none), `count` is the number kept, and `error` holds the message. A failed fetch never leaves a source with fewer records. A source that succeeds replaces its records and has a null `error`. The run exits non-zero if any source failed.
+
+## Dashboard
+
+`src/web/pages/dashboard/` is the page at `/dashboard`. Its filters (`category`, `class`, `from`, `to`, `interval`) live in the URL query, so a link opens the same view; a value that is not valid is ignored. Every chart has a Chart/Table toggle, and the table holds the same numbers.
+
+| Part | Reads | Shows |
+|---|---|---|
+| Figures | `/api/stats/summary`, `/api/meta` | active recalls by class, recalls begun this month, median days to classification, each source's last refresh. Not filtered |
+| Recalls over time | `/api/stats/timeseries` with `interval`, `category`, `class`, `from`, `to` | periods stacked by class (colors from `src/web/severity.ts`), and under it where each source's history starts, from `earliest`, so a jump where a source begins is not read as a rise |
+| Leading hazards | `/api/stats/hazards` with `category`, `from`, `to` | the ten hazards with the most recalls; the class filter keeps one class of each row's counts |
+| States with the most recalls | `/api/stats/states` with `from`, `to`; with a category, `/api/recalls?category=` | the ten states with the most recalls, nationwide ones apart as the API counts them |
+
+`/api/stats/states` has no category, so with one chosen the page counts the category's recalls itself, by the date each began and in the same way. The class filter is applied to the counts in the page for hazards and states.
 
 ## Build and run
 

@@ -2,13 +2,13 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { firmsAgree, matches, mergeAnnouncements } from "../../src/ingest/match.js";
 import { buildSnapshot } from "../../src/ingest/snapshot.js";
-import type { Recall } from "../../src/shared/recall.js";
+import type { RawRecall } from "../../src/shared/recall.js";
 
 interface Case {
   announcementUrl: string;
   announcementFirm: string;
   announcedAt: string;
-  category: Recall["category"];
+  category: RawRecall["category"];
   recallNumber: string;
   reportFirm: string;
   initiatedAt: string;
@@ -17,7 +17,7 @@ const cases: { pairs: Case[]; misses: Case[] } = JSON.parse(
   readFileSync(new URL("../fixtures/match.json", import.meta.url), "utf8"),
 );
 
-const recall = (over: Partial<Recall>): Recall => ({
+const recall = (over: Partial<RawRecall>): RawRecall => ({
   id: "",
   source: "openfda-food",
   category: "food",
@@ -56,7 +56,7 @@ const announcement = (c: Case) =>
 const report = (c: Case) =>
   recall({
     id: `openfda-${c.category}:${c.recallNumber}`,
-    source: `openfda-${c.category}` as Recall["source"],
+    source: `openfda-${c.category}` as RawRecall["source"],
     category: c.category,
     recallNumber: c.recallNumber,
     classification: "II",
@@ -145,10 +145,10 @@ describe("merge", () => {
 
   it("happens in the snapshot once every source is fetched", async () => {
     const c = cases.pairs[0];
-    const source = (id: Recall["source"], r: Recall) => ({
+    const source = (id: RawRecall["source"], r: RawRecall) => ({
       id,
       fetch: async () => [r],
-      normalize: (raw: unknown) => raw as Recall,
+      normalize: (raw: unknown) => raw as RawRecall,
     });
     const snap = await buildSnapshot(
       [source("openfda-food", report(c)), source("fda-announcement", announcement(c))],

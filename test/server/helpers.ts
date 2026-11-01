@@ -10,6 +10,7 @@ export const recall = (over: Partial<Recall>): Recall => ({
   status: "active",
   product: "p",
   reason: "r",
+  hazard: "other",
   firm: "f",
   firmCity: null,
   firmState: null,

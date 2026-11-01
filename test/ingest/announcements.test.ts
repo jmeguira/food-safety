@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { fetchAnnouncements, normalizeAnnouncement } from "../../src/ingest/announcements.js";
 import { fixtureFetch } from "../../src/ingest/fixtures.js";
-import type { Recall } from "../../src/shared/recall.js";
+import type { RawRecall } from "../../src/shared/recall.js";
 
 const BASE = "https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/";
 const TAYLOR = `${BASE}taylor-farms-issues-recall-h-e-b-backyard-bbq-chop-salad-kit-due-potential-undeclared-soy-and-tree`;
@@ -15,11 +15,11 @@ const PAN_PEPIN = `${BASE}pan-pepin-inc-emite-alerta-por-alergenos-en-el-product
 const TONIGHT = `${BASE}tonight-we-ride-llc-issues-voluntary-recall-ultimate-forza-male-supplement-due-presence-undeclared`;
 
 const sleeps: number[] = [];
-const run = async (previous: Recall[] = [], fetchFn: typeof fetch = fixtureFetch) => {
+const run = async (previous: RawRecall[] = [], fetchFn: typeof fetch = fixtureFetch) => {
   const raw = await fetchAnnouncements(fetchFn, previous, { sleep: async (ms) => void sleeps.push(ms) });
   return raw.map(normalizeAnnouncement);
 };
-const byUrl = (recalls: Recall[], url: string) => recalls.find((r) => r.links[0].url === url)!;
+const byUrl = (recalls: RawRecall[], url: string) => recalls.find((r) => r.links[0].url === url)!;
 
 describe("announcements", () => {
   it("become unclassified active recalls linking their announcement", async () => {

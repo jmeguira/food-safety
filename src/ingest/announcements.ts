@@ -1,4 +1,4 @@
-import type { Recall, RecallCategory } from "../shared/recall.js";
+import type { RawRecall, RecallCategory } from "../shared/recall.js";
 import { parseDistribution } from "./distribution.js";
 import type { FetchFn } from "./openfda.js";
 
@@ -26,11 +26,11 @@ interface Page {
   distributionText: string;
 }
 
-/** A feed item with its page, or null when the page could not be loaded or read; a cached item carries the Recall already built. */
+/** A feed item with its page, or null when the page could not be loaded or read; a cached item carries the record already built. */
 export interface Announcement {
   item: FeedItem;
   page: Page | null;
-  cached?: Recall;
+  cached?: RawRecall;
 }
 
 const ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
@@ -107,7 +107,7 @@ function category(productType: string): RecallCategory {
   return "food";
 }
 
-export function normalizeAnnouncement({ item, page, cached }: Announcement): Recall {
+export function normalizeAnnouncement({ item, page, cached }: Announcement): RawRecall {
   if (cached) return cached;
   const path = new URL(item.url).pathname;
   const d = parseDistribution(page?.distributionText ?? "");
@@ -148,7 +148,7 @@ const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, 
 /** The feed's items with their pages. A page that fails keeps its item; only a feed that fails fails the source. */
 export async function fetchAnnouncements(
   fetchFn: FetchFn,
-  previous: Recall[] = [],
+  previous: RawRecall[] = [],
   deps: AnnouncementDeps = {},
 ): Promise<Announcement[]> {
   const { sleep = wait } = deps;
@@ -159,7 +159,7 @@ export async function fetchAnnouncements(
   const items = parseFeed(await res.text());
 
   // A failed page leaves the firm empty (the feed does not name it), so it is read again; a parsed page never does, whether or not it named a firm or a distribution.
-  const read = new Map<string, Recall>();
+  const read = new Map<string, RawRecall>();
   for (const r of previous) if (r.source === "fda-announcement" && r.firm !== "") read.set(r.links[0]?.url, r);
 
   const out: Announcement[] = [];

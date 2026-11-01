@@ -1,4 +1,4 @@
-import type { Recall } from "../shared/recall.js";
+import type { RawRecall } from "../shared/recall.js";
 
 /** An announcement and a report of one recall are initiated within this many days of each other. */
 export const MATCH_WINDOW_DAYS = 14;
@@ -27,7 +27,7 @@ export function firmsAgree(a: string, b: string): boolean {
 
 const days = (iso: string) => Date.parse(iso) / DAY_MS;
 
-export function matches(announcement: Recall, report: Recall): boolean {
+export function matches(announcement: RawRecall, report: RawRecall): boolean {
   if (announcement.category !== report.category) return false;
   if (!announcement.initiatedAt || !report.initiatedAt) return false;
   if (Math.abs(days(report.initiatedAt) - days(announcement.initiatedAt)) > MATCH_WINDOW_DAYS) return false;
@@ -38,11 +38,11 @@ export function matches(announcement: Recall, report: Recall): boolean {
  * Each announcement that matches an enforcement report leaves the list, and the report gains its link.
  * An announcement takes the closest report in time; a report takes one announcement at most.
  */
-export function mergeAnnouncements(recalls: Recall[]): Recall[] {
+export function mergeAnnouncements<T extends RawRecall>(recalls: T[]): T[] {
   const reports = recalls.filter((r) => r.source !== "fda-announcement");
-  const gained = new Map<Recall, Recall>();
-  const matched = new Set<Recall>();
-  const gap = (a: Recall, r: Recall) => Math.abs(days(r.initiatedAt!) - days(a.initiatedAt!));
+  const gained = new Map<T, T>();
+  const matched = new Set<T>();
+  const gap = (a: T, r: T) => Math.abs(days(r.initiatedAt!) - days(a.initiatedAt!));
   for (const a of recalls) {
     if (a.source !== "fda-announcement") continue;
     const best = reports
