@@ -15,7 +15,7 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (snap
 | Part | Where | Responsibility |
 |---|---|---|
 | Server | `src/server/` | `createApp(webRoot, current)` in `app.ts` builds the Hono app; `api.ts` holds the API routes; `store.ts` holds the [snapshot](glossary.md#snapshot) in memory and refreshes it; `main.ts` starts it on `PORT` (default 3000), serving `dist/web` |
-| Web | `src/web/` | React app routed with react-router: `/` is the Map page, `/dashboard` the Dashboard; both are placeholders |
+| Web | `src/web/` | React app routed with react-router: `/` is the Map page (a placeholder), `/dashboard` the [Dashboard](#dashboard) |
 | Severity | `src/shared/severity.ts`, `src/web/severity.ts` | the [severity class](glossary.md#severity-class) type, and its label, color and meaning for display |
 | Shared | `src/shared/` | types used by both server and web; `api.ts` holds the request and response types of the API |
 | States | `src/shared/states.ts` | the 50 states, DC and the territories, each with USPS code, name and FIPS code; records carry USPS codes, the map joins on FIPS |
@@ -169,6 +169,19 @@ Defined in `src/shared/recall.ts`; the rest of the code never reads a source's o
 ```
 
 When a source fails, its records from the previous snapshot are kept as they were, `refreshedAt` stays at its last success (null if there was none), `count` is the number kept, and `error` holds the message. A failed fetch never leaves a source with fewer records. A source that succeeds replaces its records and has a null `error`. The run exits non-zero if any source failed.
+
+## Dashboard
+
+`src/web/pages/dashboard/` is the page at `/dashboard`. Its filters (`category`, `class`, `from`, `to`, `interval`) live in the URL query, so a link opens the same view; a value that is not valid is ignored. Every chart has a Chart/Table toggle, and the table holds the same numbers.
+
+| Part | Reads | Shows |
+|---|---|---|
+| Figures | `/api/stats/summary`, `/api/meta` | active recalls by class, recalls begun this month, median days to classification, each source's last refresh. Not filtered |
+| Recalls over time | `/api/stats/timeseries` with `interval`, `category`, `class`, `from`, `to` | periods stacked by class (colors from `src/web/severity.ts`), and under it where each source's history starts, from `earliest`, so a jump where a source begins is not read as a rise |
+| Leading hazards | `/api/stats/hazards` with `category`, `from`, `to` | the ten hazards with the most recalls; the class filter keeps one class of each row's counts |
+| States with the most recalls | `/api/stats/states` with `from`, `to`; with a category, `/api/recalls?category=` | the ten states with the most recalls, nationwide ones apart as the API counts them |
+
+`/api/stats/states` has no category, so with one chosen the page counts the category's recalls itself, by the date each began and in the same way. The class filter is applied to the counts in the page for hazards and states.
 
 ## Build and run
 
