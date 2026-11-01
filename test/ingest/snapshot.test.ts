@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { normalizeReport } from "../../src/ingest/openfda.js";
+import { hazardOf } from "../../src/ingest/hazard.js";
 import { buildSnapshot, readSnapshot, writeSnapshot } from "../../src/ingest/snapshot.js";
 import type { Source } from "../../src/ingest/sources.js";
 
@@ -45,5 +46,18 @@ describe("snapshot file", () => {
     await writeSnapshot(path, snap);
     expect(await readSnapshot(path)).toEqual(snap);
     expect(readdirSync(join(dir, "data"))).toEqual(["snapshot.json"]);
+  });
+});
+
+describe("hazard", () => {
+  it("is set on every source's recalls from their reason", async () => {
+    const s = await buildSnapshot(
+      [make("openfda-food", async () => food), make("openfda-drug", async () => food.slice(0, 1))],
+      null,
+      noFetch,
+    );
+    expect(s.recalls).toHaveLength(4);
+    expect(s.recalls.every((r) => r.hazard === hazardOf(r.reason, r.category))).toBe(true);
+    expect(s.recalls.map((r) => r.hazard)).not.toContain(undefined);
   });
 });

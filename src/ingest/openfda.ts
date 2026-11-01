@@ -1,4 +1,4 @@
-import type { Recall, RecallCategory } from "../shared/recall.js";
+import type { RawRecall, Recall, RecallCategory } from "../shared/recall.js";
 import { parseDistribution } from "./distribution.js";
 
 export type FetchFn = typeof fetch;
@@ -107,7 +107,7 @@ function voluntary(s?: string): boolean | null {
   return null;
 }
 
-export function normalizeReport(endpoint: Endpoint, r: OpenFdaReport): Recall {
+export function normalizeReport(endpoint: Endpoint, r: OpenFdaReport): RawRecall {
   const source = `openfda-${endpoint}` as const;
   const category: RecallCategory = endpoint;
   const distributionText = r.distribution_pattern ?? "";

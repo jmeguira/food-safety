@@ -1,6 +1,7 @@
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import type { Recall } from "../shared/recall.js";
+import type { RawRecall, Recall } from "../shared/recall.js";
+import { hazardOf } from "./hazard.js";
 import { mergeAnnouncements } from "./match.js";
 import type { FetchFn } from "./openfda.js";
 import type { Source } from "./sources.js";
@@ -18,6 +19,9 @@ export interface Snapshot {
   recalls: Recall[];
 }
 
+/** The hazard is set here, over every source's records, so a source never assigns its own. */
+const withHazard = (r: RawRecall): Recall => ({ ...r, hazard: hazardOf(r.reason, r.category) });
+
 /** A source that fails keeps the records of the previous snapshot, so a failed fetch never shrinks it. */
 export async function buildSnapshot(
   sources: Source[],
@@ -26,7 +30,7 @@ export async function buildSnapshot(
   now = new Date(),
 ): Promise<Snapshot> {
   const status: Record<string, SourceStatus> = {};
-  const recalls: Recall[] = [];
+  const recalls: RawRecall[] = [];
   for (const source of sources) {
     const kept = previous?.recalls.filter((r) => r.source === source.id) ?? [];
     try {
@@ -42,7 +46,7 @@ export async function buildSnapshot(
       };
     }
   }
-  return { generatedAt: now.toISOString(), sources: status, recalls: mergeAnnouncements(recalls) };
+  return { generatedAt: now.toISOString(), sources: status, recalls: mergeAnnouncements(recalls).map(withHazard) };
 }
 
 export async function readSnapshot(path: string): Promise<Snapshot | null> {
