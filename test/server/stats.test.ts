@@ -178,3 +178,15 @@ describe("date", () => {
     ]);
   });
 });
+
+describe("timeseries range", () => {
+  it("is bounded by the snapshot's span, not the requested dates", async () => {
+    const { body } = await get(
+      [recall({ initiatedAt: "2026-09-10" })],
+      "/api/stats/timeseries?interval=month&from=0000-01-01&to=9999-12-31",
+    );
+    expect(body.periods.map((p: any) => p.period)).toEqual(["2026-09", "2026-10", "2026-11"]);
+    const empty = await get([], "/api/stats/timeseries?interval=month&from=0000-01-01");
+    expect(empty.body.periods).toEqual([]);
+  });
+});

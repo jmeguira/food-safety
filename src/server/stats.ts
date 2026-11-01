@@ -67,10 +67,13 @@ export function timeseries(
 ): TimeseriesResponse {
   const rows = new Map<string, ClassCounts>();
   let min: string | null = null;
-  let max: string | null = null;
+  let snapMin: string | null = null;
+  let snapMax: string | null = null;
   for (const r of snapshot.recalls) {
     const d = countedAt(r);
     if (!d) continue;
+    if (!snapMin || d < snapMin) snapMin = d;
+    if (!snapMax || d > snapMax) snapMax = d;
     if (f.category && r.category !== f.category) continue;
     if (f.class && classOf(r) !== f.class) continue;
     if (f.state && !r.states.includes(f.state.toUpperCase())) continue;
@@ -80,16 +83,17 @@ export function timeseries(
     if (!row) rows.set(p, (row = emptyCounts()));
     row[classOf(r)]++;
     if (!min || d < min) min = d;
-    if (!max || d > max) max = d;
   }
-  const first = f.from ?? min;
-  const last = f.to ?? (max && max > today ? max : today);
+  // Requested dates are clamped to the snapshot's span so the output never grows with the request.
+  const spanEnd = snapMax && snapMax > today ? snapMax : today;
+  const first = f.from ? (snapMin && f.from < snapMin ? snapMin : f.from) : min;
+  const last = f.to && f.to < spanEnd ? f.to : spanEnd;
   const out: TimeseriesResponse = {
     interval: f.interval,
     periods: [],
     earliest: earliestBySource(snapshot),
   };
-  if (!first || first > last) return out;
+  if (!snapMin || !first || first > last) return out;
   for (const period of periods(first, last, f.interval)) {
     const counts = rows.get(period) ?? emptyCounts();
     out.periods.push({
