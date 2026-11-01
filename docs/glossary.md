@@ -34,3 +34,15 @@ The free text in a recall that says where the product went, such as "CA, NV, and
 
 ### nationwide
 A distribution pattern that says the product went everywhere in the US ("nationwide", "nationally", "all 50 states") or worldwide. A nationwide recall reaches every state and DC.
+
+### active recall
+A recall FDA has not closed (`status` `active`). It can be years old, so the map counts only those that began within a chosen window. See [architecture](architecture.md#began-within).
+
+### Class I
+The most serious [class](#class): a reasonable probability of serious adverse health consequences or death.
+
+### Class II
+Temporary or medically reversible adverse health consequences, or a remote probability of serious ones.
+
+### Class III
+Not likely to cause adverse health consequences.
