@@ -1,5 +1,6 @@
 import { Hono } from "hono";
-import type { MetaResponse, RecallsResponse, StateSummary, StatesResponse } from "../shared/api.js";
+import type { MetaResponse, RecallsResponse, StateSummary, StatesQuery, StatesResponse } from "../shared/api.js";
+import type { Recall } from "../shared/recall.js";
 import type { SeverityClass } from "../shared/severity.js";
 import { STATES } from "../shared/states.js";
 import type { Snapshot } from "../ingest/snapshot.js";
@@ -17,12 +18,22 @@ const add = (summary: StateSummary, cls: SeverityClass) => {
   if (CLASSES.indexOf(cls) < CLASSES.indexOf(summary.mostSevere)) summary.mostSevere = cls;
 };
 
+/** A recall begins on `initiatedAt`, else `reportedAt`; with neither it begins on no date. */
+const beganOnOrAfter = (r: Recall, since: string): boolean => {
+  const began = r.initiatedAt ?? r.reportedAt;
+  return began !== null && began >= since;
+};
+
+const SINCE = /^\d{4}-\d{2}-\d{2}$/;
+
 /** A nationwide recall lists every state, so it is counted under `nationwide` and in no state's own counts. */
-export function summarizeStates(snapshot: Snapshot): StatesResponse {
+export function summarizeStates(snapshot: Snapshot, { since, category }: StatesQuery = {}): StatesResponse {
   const out: StatesResponse = { nationwide: emptySummary() };
   for (const s of STATES) out[s.code] = emptySummary();
   for (const r of snapshot.recalls) {
     if (r.status !== "active") continue;
+    if (category && r.category !== category) continue;
+    if (since && !beganOnOrAfter(r, since)) continue;
     const cls = r.classification ?? "unclassified";
     if (r.nationwide) add(out.nationwide, cls);
     else for (const code of r.states) if (out[code]) add(out[code], cls);
@@ -46,13 +57,15 @@ export function apiRoutes(current: () => Snapshot | null): Hono {
   const snapshot = (): Snapshot => current() ?? empty;
 
   api.get("/recalls", (c) => {
-    const { status, category, class: cls, state } = c.req.query();
+    const { status, category, class: cls, state, since } = c.req.query();
+    if (since !== undefined && !SINCE.test(since)) return c.json({ error: "since must be YYYY-MM-DD" }, 400);
     const recalls = snapshot().recalls.filter(
       (r) =>
         (!status || r.status === status) &&
         (!category || r.category === category) &&
         (!cls || (r.classification ?? "unclassified") === cls) &&
-        (!state || r.states.includes(state.toUpperCase())),
+        (!state || r.states.includes(state.toUpperCase())) &&
+        (!since || beganOnOrAfter(r, since)),
     );
     return c.json<RecallsResponse>(recalls);
   });
@@ -62,7 +75,12 @@ export function apiRoutes(current: () => Snapshot | null): Hono {
     return recall ? c.json(recall) : c.json({ error: "not found" }, 404);
   });
 
-  api.get("/states", (c) => c.json<StatesResponse>(statesOf(snapshot())));
+  api.get("/states", (c) => {
+    const { since, category } = c.req.query();
+    if (since !== undefined && !SINCE.test(since)) return c.json({ error: "since must be YYYY-MM-DD" }, 400);
+    const query = { since, category: category as StatesQuery["category"] };
+    return c.json<StatesResponse>(since || category ? summarizeStates(snapshot(), query) : statesOf(snapshot()));
+  });
 
   api.get("/meta", (c) => c.json<MetaResponse>(snapshot().sources));
 

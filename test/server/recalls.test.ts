@@ -46,3 +46,29 @@ describe("GET /api/recalls/:id", () => {
     expect((await app.request("/api/recalls/nope")).status).toBe(404);
   });
 });
+
+describe("GET /api/recalls since", () => {
+  const dated = createApp("/nonexistent", () =>
+    snapshot([
+      recall({ id: "old", initiatedAt: "2024-12-31", reportedAt: "2026-01-01" }),
+      recall({ id: "init", initiatedAt: "2025-06-01" }),
+      recall({ id: "rep", reportedAt: "2025-06-02" }),
+      recall({ id: "none" }),
+    ]),
+  );
+  const get = async (qs: string) =>
+    ((await (await dated.request(`/api/recalls${qs}`)).json()) as { id: string }[]).map((r) => r.id);
+
+  it("keeps recalls begun on or after the date, by initiatedAt else reportedAt", async () => {
+    expect(await get("?since=2025-06-01")).toEqual(["init", "rep"]);
+  });
+
+  it("leaves out a recall with no date, and keeps it without since", async () => {
+    expect(await get("?since=2000-01-01")).toEqual(["old", "init", "rep"]);
+    expect(await get("")).toEqual(["old", "init", "rep", "none"]);
+  });
+
+  it("rejects a malformed date", async () => {
+    expect((await dated.request("/api/recalls?since=yesterday")).status).toBe(400);
+  });
+});

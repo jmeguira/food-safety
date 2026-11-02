@@ -15,7 +15,7 @@ browser ── React app ── fetch /api ──▶ Hono server ──▶ (snap
 | Part | Where | Responsibility |
 |---|---|---|
 | Server | `src/server/` | `createApp(webRoot, current)` in `app.ts` builds the Hono app; `api.ts` holds the API routes; `store.ts` holds the [snapshot](glossary.md#snapshot) in memory and refreshes it; `main.ts` starts it on `PORT` (default 3000), serving `dist/web` |
-| Web | `src/web/` | React app routed with react-router: `/` is the Map page, `/dashboard` the Dashboard; both are placeholders |
+| Web | `src/web/` | React app routed with react-router: `/` is the [Map page](#map-page), `/dashboard` the Dashboard, a placeholder |
 | Severity | `src/shared/severity.ts`, `src/web/severity.ts` | the [severity class](glossary.md#severity-class) type, and its label, color and meaning for display |
 | Shared | `src/shared/` | types used by both server and web; `api.ts` holds the request and response types of the API |
 | States | `src/shared/states.ts` | the 50 states, DC and the territories, each with USPS code, name and FIPS code; records carry USPS codes, the map joins on FIPS |
@@ -39,9 +39,9 @@ Every route reads the snapshot the store holds at the moment of the request; non
 | Route | Returns |
 |---|---|
 | `GET /api/health` | `{ "ok": true }` |
-| `GET /api/recalls` | the Recalls matching every query parameter given: `status` (`active`, `closed`), `category`, `class` (`I`, `II`, `III`, `unclassified`), `state` (USPS code; matches recalls that name the state and nationwide ones) |
+| `GET /api/recalls` | the Recalls matching every query parameter given: `status` (`active`, `closed`), `category`, `class` (`I`, `II`, `III`, `unclassified`), `state` (USPS code; matches recalls that name the state and nationwide ones), `since` (`YYYY-MM-DD`; recalls [begun](#began-within) on or after it) |
 | `GET /api/recalls/:id` | one Recall, or 404 |
-| `GET /api/states` | an object keyed by USPS code, each `{ active, mostSevere }`: the active recalls by class, and the most severe class present (null when none). It counts only recalls that name the state. Nationwide recalls, which list every state, are counted under the key `nationwide` instead, in the same shape, so the map decides how to combine them |
+| `GET /api/states` | an object keyed by USPS code, each `{ active, mostSevere }`: the active recalls by class, and the most severe class present (null when none). It counts only recalls that name the state. Nationwide recalls, which list every state, are counted under the key `nationwide` instead, in the same shape, so the map decides how to combine them. It takes `category` and `since`, as above, and then counts only the matching recalls; a malformed `since` is a 400 on both routes |
 | `GET /api/meta` | each source's `{ refreshedAt, count, error }` |
 
 Before the first snapshot exists the routes answer as if it were empty. Routes are added to `apiRoutes` in `api.ts`.
@@ -51,6 +51,30 @@ Before the first snapshot exists the routes answer as if it were empty. Routes a
 `store.ts` keeps the snapshot in memory. On start it reads `data/snapshot.json` and refreshes at once if the file is missing or its `generatedAt` is `REFRESH_HOURS` (default 6) or more old; it then refreshes every `REFRESH_HOURS`. The server listens before the first refresh ends.
 
 A refresh builds the next snapshot with the same `buildSnapshot` as `npm run ingest`, writes it to the file, and only then replaces the one in memory, so requests see either the old snapshot or the new, never a partial one. If the write fails, the old snapshot stays and the error is logged. A source that fails keeps its previous records inside the new snapshot, as [described below](#snapshot). Only one refresh runs at a time.
+
+## Map page
+
+`src/web/pages/map/` reads `/api/states` for the shading and counts and `/api/meta` for freshness, and nothing else.
+
+Each state is an SVG `path` drawn from `us-atlas/states-10m.json` (TopoJSON) with `topojson-client` and `d3-geo`'s `geoAlbersUsa`, so there are no map tiles and no key; Alaska and Hawaii are insets. us-atlas keys states by FIPS, joined to USPS codes through `src/shared/states.ts`. Territories `geoAlbersUsa` cannot place are not drawn; every territory is listed under the map with its counts.
+
+A state is shaded by the color of its most severe [active](glossary.md#active-recall) class (`src/web/severity.ts`), and left gray with none. Color is never the only signal: the legend names each class and what it means, and each state's tooltip and `aria-label` name the classes and counts. A state is focusable, so hovering and keyboard focus both show the tooltip; clicking sets the selected state.
+
+### Began within
+
+FDA leaves many recalls open for years, so "active" alone shades nearly every state as an emergency. The page asks for recalls that began within a window: last 90 days, last 12 months (chosen on open), or all ongoing. A recall begins on `initiatedAt`, else `reportedAt`. The page turns the window into `since` from today in the viewer's clock and sends it; the server compares ISO dates as strings and leaves out a recall with no date. All ongoing sends no `since`, so it counts those too. The page states the window it shows.
+
+### Filters and nationwide recalls
+
+| Control | Applied |
+|---|---|
+| Began within, Category | by the server, as `since` and `category` on `/api/states` |
+| Class | by the page, narrowing the counts it already has |
+| Add nationwide recalls | by the page |
+
+Nationwide recalls sit apart, in their own panel by class, and are left out of the shading by default: there is nearly always an active nationwide Class I recall, which would shade every state the same. The toggle adds their counts to every state's.
+
+`summarizeStates` is the one place states are counted. The summary with no parameters is cached per snapshot; a filtered request is summarized per request.
 
 ## Distribution patterns
 
